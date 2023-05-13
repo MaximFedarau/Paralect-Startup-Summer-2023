@@ -1,9 +1,10 @@
 import React, { FC } from "react";
+import { Button } from "@mantine/core";
 
 const Home: FC = () => {
   return (
     <div>
-      <button>Start!</button>
+      <Button>Start!</Button>
     </div>
   );
 };
