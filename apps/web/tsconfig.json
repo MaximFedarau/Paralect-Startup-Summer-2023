@@ -6,15 +6,19 @@
         "name": "next"
       }
     ],
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "paths": {
+      "@styles/*": ["styles/*"],
+
+      "@components/*": ["components/*"],
+      "@components": ["components"],
+
+      "@constants/*": ["constants/*"],
+      "@constants": ["constants"],
+
+      "@assets/*": ["assets/*"]
+    }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }
