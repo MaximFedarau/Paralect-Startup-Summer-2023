@@ -1,11 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, PropsWithChildren } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Text, useMantineTheme } from "@mantine/core";
 
-interface Props {
+interface Props extends PropsWithChildren {
   href: string;
-  children: string;
 }
 
 export const HighlightedLink: FC<Props> = ({ href, children }) => {

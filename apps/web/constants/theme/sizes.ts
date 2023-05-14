@@ -20,4 +20,13 @@ export const SIZES = {
   "24xl": 112,
   "28xl": 128,
   "32xl": 144,
+  "36xl": 160,
+  "40xl": 176,
+  "44xl": 192,
+  "48xl": 208,
+};
+
+export const DEVICE_SIZES = {
+  mobile: 512,
+  tablet: 996,
 };
