@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import Head from "next/head";
 
-import Page404 from "./404";
+import { NoData } from "@components";
 
 const Favorites: FC = () => {
   return (
@@ -9,7 +9,7 @@ const Favorites: FC = () => {
       <Head>
         <title>Избранное</title>
       </Head>
-      <Page404 />
+      <NoData />
     </>
   );
 };
