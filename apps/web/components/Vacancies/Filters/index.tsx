@@ -10,9 +10,8 @@ import {
   FiltersContainer,
   FilterContainer,
   FilterSelect,
-  SubmitButton,
 } from "./styles";
-import { LargeText } from "@components";
+import { LargeText, DarkBlueButton } from "@components";
 
 export const Filters: FC = () => {
   return (
@@ -37,7 +36,7 @@ export const Filters: FC = () => {
           <FilterSelect label="Оклад" placeholder="От" data={["item"]} />
           <FilterSelect placeholder="До" data={["item"]} />
         </FilterContainer>
-        <SubmitButton>Применить</SubmitButton>
+        <DarkBlueButton>Применить</DarkBlueButton>
       </FiltersContainer>
     </Container>
   );

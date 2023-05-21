@@ -1,13 +1,7 @@
 import styled from "@emotion/styled";
 
 import { FONTS, MEDIA_QUERIES, SIZES } from "@constants";
-import {
-  createPolymorphicComponent,
-  Select,
-  SelectProps,
-  Button,
-  ButtonProps,
-} from "@mantine/core";
+import { createPolymorphicComponent, Select, SelectProps } from "@mantine/core";
 
 export const Container = styled.div`
   display: flex;
@@ -61,6 +55,7 @@ const _FilterSelect = styled(Select)`
 
   & .mantine-Select-input {
     height: ${SIZES["6xl"]}px;
+    border-color: ${({ theme }) => theme.colors.grey[3]};
   }
 
   & .mantine-Select-rightSection {
@@ -70,15 +65,4 @@ const _FilterSelect = styled(Select)`
 
 export const FilterSelect = createPolymorphicComponent<"div", SelectProps>(
   _FilterSelect
-);
-
-export const _SubmitButton = styled(Button)`
-  height: ${SIZES["6xl"]}px;
-  border-radius: ${SIZES.sm}px;
-  background-color: ${({ theme }) => theme.colors.blue[4]};
-  font-weight: ${FONTS.weights.regular};
-`;
-
-export const SubmitButton = createPolymorphicComponent<"button", ButtonProps>(
-  _SubmitButton
 );

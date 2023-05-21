@@ -1,7 +1,13 @@
 import styled from "@emotion/styled";
-import { createPolymorphicComponent, Text, TextProps } from "@mantine/core";
+import {
+  createPolymorphicComponent,
+  Text,
+  TextProps,
+  Button,
+  ButtonProps,
+} from "@mantine/core";
 
-import { FONTS } from "@constants";
+import { FONTS, SIZES } from "@constants";
 
 const _DefaultText = styled(Text)`
   color: ${({ theme }) => theme.colors.grey[6]};
@@ -27,4 +33,15 @@ const _BaseMText = styled(DefaultText)`
 
 export const BaseMText = createPolymorphicComponent<"div", TextProps>(
   _BaseMText
+);
+
+export const _DarkBlueButton = styled(Button)`
+  height: ${SIZES["6xl"]}px;
+  border-radius: ${SIZES.sm}px;
+  background-color: ${({ theme }) => theme.colors.blue[4]};
+  font-weight: ${FONTS.weights.regular};
+`;
+
+export const DarkBlueButton = createPolymorphicComponent<"button", ButtonProps>(
+  _DarkBlueButton
 );
