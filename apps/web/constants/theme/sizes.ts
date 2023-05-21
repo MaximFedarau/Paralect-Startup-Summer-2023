@@ -24,6 +24,8 @@ export const SIZES = {
   "40xl": 176,
   "44xl": 192,
   "48xl": 208,
+  "68xl": 288,
+  "396xl": 1600,
 };
 
 export const DEVICE_SIZES = {

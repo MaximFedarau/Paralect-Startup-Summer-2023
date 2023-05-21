@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import Head from "next/head";
 
-import { NoVacancies } from "@components";
+import { Vacancies } from "@components";
 
 const Home: FC = () => {
   return (
@@ -9,7 +9,7 @@ const Home: FC = () => {
       <Head>
         <title>Поиск вакансий</title>
       </Head>
-      <NoVacancies />
+      <Vacancies />
     </>
   );
 };
