@@ -4,7 +4,18 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": [
+        "API_URL",
+        "ACCESS_TOKEN_API_URL",
+        "VACANCIES_API_URL",
+        "LOGIN",
+        "PASSWORD",
+        "CLIENT_ID",
+        "CLIENT_SECRET",
+        "HR",
+        "SECRET_KEY"
+      ]
     },
     "lint": {},
     "dev": {

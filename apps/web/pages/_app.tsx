@@ -7,7 +7,7 @@ import { Layout } from "@components";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
-export default function App({ Component, ...pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
   return (
     <MantineProvider
       theme={{
