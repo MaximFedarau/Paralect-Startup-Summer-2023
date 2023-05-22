@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
 import axios from "axios";
 
 import { Container, ContentContainer } from "./styles";
@@ -13,26 +13,17 @@ interface Vacancies {
 }
 
 export const Vacancies: FC = () => {
-  const [catalogueValue, onCatalogueChange] = useState("");
-  const [paymentFromValue, onPaymentFromChange] = useState("");
-  const [paymentToValue, onPaymentToChange] = useState("");
-
-  const [searchBarValue, onSearchBarChange] = useState("");
-  const handleSearchBar = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    onSearchBarChange(target.value);
-  };
-
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [isVacanciesLoading, setIsVacanciesLoading] = useState(true);
   const [isVacanciesError, setIsVacanciesError] = useState(false);
 
-  const onSearchClick = async () => {
-    await getVacancies(
-      searchBarValue,
-      catalogueValue,
-      paymentFromValue,
-      paymentToValue
-    );
+  const onSearchClick = async (
+    searchBarValue?: string,
+    catalogue?: string,
+    paymentFrom?: string,
+    paymentTo?: string
+  ) => {
+    await getVacancies(searchBarValue, catalogue, paymentFrom, paymentTo);
   };
 
   const getVacancies = async (
@@ -67,19 +58,7 @@ export const Vacancies: FC = () => {
     getVacancies();
   }, []);
 
-  const filtersProps = {
-    catalogueValue,
-    onCatalogueChange,
-    paymentFromValue,
-    onPaymentFromChange,
-    paymentToValue,
-    onPaymentToChange,
-    onSearchClick,
-  };
-
   const listProps = {
-    searchBarValue,
-    onSearchBarChange: handleSearchBar,
     vacancies,
     isLoading: isVacanciesLoading,
     isError: isVacanciesError,
@@ -89,7 +68,7 @@ export const Vacancies: FC = () => {
   return (
     <Container>
       <ContentContainer>
-        <Filters {...filtersProps} />
+        <Filters onSearchClick={onSearchClick} />
         <List {...listProps} />
       </ContentContainer>
     </Container>

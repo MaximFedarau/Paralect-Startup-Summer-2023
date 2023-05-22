@@ -4,22 +4,30 @@ import { RootState } from "@store";
 
 const vacanciesFormSelector = ({ vacanciesForm }: RootState) => vacanciesForm;
 
-export const searchBarValueSelector = createSelector(
+export const currentSearchBarValueSelector = createSelector(
   [vacanciesFormSelector],
-  ({ searchBarValue }) => searchBarValue
+  ({ currentSearchBarValue }) => currentSearchBarValue
 );
 
-export const catalogueSelector = createSelector(
+export const requestSearchBarValueSelector = createSelector(
   [vacanciesFormSelector],
-  ({ catalogue }) => catalogue
+  ({ requestSearchBarValue }) => requestSearchBarValue
 );
 
-export const paymentFromSelector = createSelector(
+export const currentFiltersSelector = createSelector(
   [vacanciesFormSelector],
-  ({ paymentFrom }) => paymentFrom
+  ({ currentCatalogue, currentPaymentFrom, currentPaymentTo }) => ({
+    currentCatalogue,
+    currentPaymentFrom,
+    currentPaymentTo,
+  })
 );
 
-export const paymentToSelector = createSelector(
+export const requestFiltersSelector = createSelector(
   [vacanciesFormSelector],
-  ({ paymentTo }) => paymentTo
+  ({ requestCatalogue, requestPaymentFrom, requestPaymentTo }) => ({
+    requestCatalogue,
+    requestPaymentFrom,
+    requestPaymentTo,
+  })
 );

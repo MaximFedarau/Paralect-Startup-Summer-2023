@@ -1,4 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import axios from "axios";
 
@@ -12,6 +13,15 @@ import {
   FilterContainer,
   FilterSelect,
 } from "./styles";
+import {
+  currentFiltersSelector,
+  setCurrentFilters,
+  setCurrentCatalogue,
+  setCurrentPaymentFrom,
+  setCurrentPaymentTo,
+  currentSearchBarValueSelector,
+  setRequestState,
+} from "@store/vacanciesForm";
 import { LargeText, DarkBlueButton, CustomLoader } from "@components";
 
 interface Industry {
@@ -28,24 +38,15 @@ interface SelectItem {
 }
 
 interface Props {
-  catalogueValue: string;
-  onCatalogueChange: (value: string) => void;
-  paymentFromValue: string;
-  onPaymentFromChange: (value: string) => void;
-  paymentToValue: string;
-  onPaymentToChange: (value: string) => void;
-  onSearchClick: () => void;
+  onSearchClick: any;
 }
 
-export const Filters: FC<Props> = ({
-  catalogueValue,
-  onCatalogueChange,
-  paymentFromValue,
-  onPaymentFromChange,
-  paymentToValue,
-  onPaymentToChange,
-  onSearchClick,
-}) => {
+export const Filters: FC<Props> = ({ onSearchClick }) => {
+  const dispatch = useDispatch();
+  const { currentCatalogue, currentPaymentFrom, currentPaymentTo } =
+    useSelector(currentFiltersSelector);
+  const searchBarValue = useSelector(currentSearchBarValueSelector);
+
   const [catalogues, setCatalogues] = useState<SelectItem[]>([]);
   const [isLoading, setIsLoading] = useState(catalogues.length ? false : true); // catalogues is REQUIRED
   const payment: SelectItem[] = [];
@@ -76,9 +77,32 @@ export const Filters: FC<Props> = ({
   }, [catalogues]);
 
   const onDrop = () => {
-    onCatalogueChange("");
-    onPaymentFromChange("");
-    onPaymentToChange("");
+    dispatch(
+      setCurrentFilters({
+        catalogue: "",
+        paymentFrom: "",
+        paymentTo: "",
+      })
+    );
+  };
+
+  const onSubmit = () => {
+    // update global request values
+    dispatch(
+      setRequestState({
+        catalogue: currentCatalogue,
+        paymentFrom: currentPaymentFrom,
+        paymentTo: currentPaymentTo,
+        searchBarValue,
+      })
+    );
+    // make a request
+    onSearchClick(
+      searchBarValue,
+      currentCatalogue,
+      currentPaymentFrom,
+      currentPaymentTo
+    );
   };
 
   return (
@@ -100,8 +124,8 @@ export const Filters: FC<Props> = ({
                 label="Отрасль"
                 placeholder="Выберите отрасль"
                 rightSection={<Image alt="Chevron Down" src={ChevronDown} />}
-                value={catalogueValue}
-                onChange={onCatalogueChange}
+                value={currentCatalogue}
+                onChange={(value) => dispatch(setCurrentCatalogue(value || ""))}
                 data={catalogues}
               />
             </FilterContainer>
@@ -110,17 +134,19 @@ export const Filters: FC<Props> = ({
                 label="Оклад"
                 placeholder="От"
                 data={payment}
-                value={paymentFromValue}
-                onChange={onPaymentFromChange}
+                value={currentPaymentFrom}
+                onChange={(value) =>
+                  dispatch(setCurrentPaymentFrom(value || ""))
+                }
               />
               <FilterSelect
                 placeholder="До"
                 data={payment}
-                value={paymentToValue}
-                onChange={onPaymentToChange}
+                value={currentPaymentTo}
+                onChange={(value) => dispatch(setCurrentPaymentTo(value || ""))}
               />
             </FilterContainer>
-            <DarkBlueButton onClick={onSearchClick}>Применить</DarkBlueButton>
+            <DarkBlueButton onClick={onSubmit}>Применить</DarkBlueButton>
           </FiltersContainer>
         </Container>
       )}

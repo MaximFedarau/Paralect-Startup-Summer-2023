@@ -6,17 +6,13 @@ import { NoVacancies, CustomLoader, VacancyItem } from "@components";
 import { Vacancy } from "@types";
 
 interface Props {
-  searchBarValue: string;
-  onSearchBarChange: ChangeEventHandler<HTMLInputElement>;
   vacancies: Vacancy[];
   isLoading: boolean;
   isError: boolean;
-  onSearchClick: () => void;
+  onSearchClick: any;
 }
 
 export const List: FC<Props> = ({
-  searchBarValue,
-  onSearchBarChange,
   vacancies,
   isLoading,
   isError,
@@ -24,12 +20,7 @@ export const List: FC<Props> = ({
 }) => {
   return (
     <Container>
-      <SearchBar
-        value={searchBarValue}
-        onChange={onSearchBarChange}
-        disabled={isError || isLoading}
-        onClick={onSearchClick}
-      />
+      <SearchBar disabled={isError || isLoading} onClick={onSearchClick} />
       {!isLoading ? (
         <>
           {vacancies.length ? (
