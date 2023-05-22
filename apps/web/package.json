@@ -15,11 +15,13 @@
     "@mantine/core": "^6.0.10",
     "@mantine/hooks": "^6.0.10",
     "@mantine/next": "^6.0.10",
+    "@reduxjs/toolkit": "^1.9.5",
     "api": "*",
     "axios": "^1.4.0",
     "next": "^13.4.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5"
   },
   "devDependencies": {
     "@types/node": "^17.0.12",
