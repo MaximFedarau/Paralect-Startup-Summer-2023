@@ -19,6 +19,13 @@ export const DefaultText = createPolymorphicComponent<"div", TextProps>(
   _DefaultText
 );
 
+const _SemiBoldText = styled(DefaultText)`
+  font-weight: ${FONTS.weights.semiBold};
+`;
+export const SemiBoldText = createPolymorphicComponent<"div", TextProps>(
+  _SemiBoldText
+);
+
 const _LargeText = styled(DefaultText)`
   font-size: ${FONTS.sizes.xl}px;
   font-weight: ${FONTS.weights.bold};
@@ -56,3 +63,5 @@ const _CustomLoader = styled(Loader)`
 export const CustomLoader = createPolymorphicComponent<"div", LoaderProps>(
   _CustomLoader
 );
+
+export * from "./VacancyItem";

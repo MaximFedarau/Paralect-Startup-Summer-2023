@@ -2,7 +2,7 @@ import React, { FC, ChangeEventHandler } from "react";
 
 import { Container, LoaderContainer } from "./styles";
 import { SearchBar } from "@components/Vacancies/SearchBar";
-import { NoVacancies, CustomLoader } from "@components";
+import { NoVacancies, CustomLoader, VacancyItem } from "@components";
 import { Vacancy } from "@types";
 
 interface Props {
@@ -33,7 +33,15 @@ export const List: FC<Props> = ({
             onChange={onSearchBarChange}
             disabled={isError}
           />
-          {vacancies.length ? <p>dfdf</p> : <NoVacancies isError={isError} />}
+          {vacancies.length ? (
+            <>
+              {vacancies.map((vacancyInfo) => (
+                <VacancyItem key={vacancyInfo.id} {...vacancyInfo} />
+              ))}
+            </>
+          ) : (
+            <NoVacancies isError={isError} />
+          )}
         </Container>
       )}
     </>

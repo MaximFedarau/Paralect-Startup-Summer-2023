@@ -16,12 +16,16 @@ export const ContentContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 80%;
+  width: 85%;
   max-width: ${SIZES["396xl"]}px;
   gap: ${SIZES["3xl"]}px;
 
   @media only screen and (${MEDIA_QUERIES.tablet}) {
     flex-direction: column;
     justify-content: start;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 `;
