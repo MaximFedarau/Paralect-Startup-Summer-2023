@@ -8,9 +8,10 @@ interface Props {
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   disabled?: boolean;
+  onClick: () => void;
 }
 
-export const SearchBar: FC<Props> = (props) => {
+export const SearchBar: FC<Props> = ({ onClick, ...props }) => {
   return (
     <Container disabled={props.disabled}>
       <SearchInput
@@ -19,7 +20,7 @@ export const SearchBar: FC<Props> = (props) => {
         icon={<Image src={Magnifier} alt="Magnifier" />}
         {...props}
       />
-      {!props.disabled && <SubmitButton>Поиск</SubmitButton>}
+      {!props.disabled && <SubmitButton onClick={onClick}>Поиск</SubmitButton>}
     </Container>
   );
 };

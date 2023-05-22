@@ -11,6 +11,7 @@ interface Props {
   vacancies: Vacancy[];
   isLoading: boolean;
   isError: boolean;
+  onSearchClick: () => void;
 }
 
 export const List: FC<Props> = ({
@@ -19,20 +20,18 @@ export const List: FC<Props> = ({
   vacancies,
   isLoading,
   isError,
+  onSearchClick,
 }) => {
   return (
-    <>
-      {isLoading ? (
-        <LoaderContainer>
-          <CustomLoader />
-        </LoaderContainer>
-      ) : (
-        <Container>
-          <SearchBar
-            value={searchBarValue}
-            onChange={onSearchBarChange}
-            disabled={isError}
-          />
+    <Container>
+      <SearchBar
+        value={searchBarValue}
+        onChange={onSearchBarChange}
+        disabled={isError || isLoading}
+        onClick={onSearchClick}
+      />
+      {!isLoading ? (
+        <>
           {vacancies.length ? (
             <>
               {vacancies.map((vacancyInfo) => (
@@ -42,8 +41,12 @@ export const List: FC<Props> = ({
           ) : (
             <NoVacancies isError={isError} />
           )}
-        </Container>
+        </>
+      ) : (
+        <LoaderContainer>
+          <CustomLoader />
+        </LoaderContainer>
       )}
-    </>
+    </Container>
   );
 };

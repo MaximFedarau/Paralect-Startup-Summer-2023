@@ -33,12 +33,21 @@ export const Vacancies: FC = () => {
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [isVacanciesLoading, setIsVacanciesLoading] = useState(true);
   const [isVacanciesError, setIsVacanciesError] = useState(false);
-  const getVacancies = async () => {
+
+  const onSearchClick = async () => {
+    await getVacancies(searchBarValue);
+  };
+
+  const getVacancies = async (keyword?: string) => {
     try {
       setIsVacanciesLoading(true);
       const {
         data: { objects },
-      } = await axios.get<Vacancies>("/api/vacancies");
+      } = await axios.get<Vacancies>(
+        `/api/vacancies?${
+          keyword && keyword.trim().length ? `keyword=${keyword.trim()}` : ""
+        }`
+      );
       setVacancies(objects);
       setIsVacanciesError(false);
     } catch (error) {
@@ -48,6 +57,8 @@ export const Vacancies: FC = () => {
       setIsVacanciesLoading(false);
     }
   };
+
+  // initial vacancies fetch
   useEffect(() => {
     getVacancies();
   }, []);
@@ -58,6 +69,7 @@ export const Vacancies: FC = () => {
     vacancies,
     isLoading: isVacanciesLoading,
     isError: isVacanciesError,
+    onSearchClick,
   };
 
   return (
