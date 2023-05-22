@@ -23,6 +23,7 @@ import {
   setRequestState,
 } from "@store/vacanciesForm";
 import { LargeText, DarkBlueButton, CustomLoader } from "@components";
+import { SearchQuery } from "@types";
 
 interface Industry {
   key: number;
@@ -38,7 +39,7 @@ interface SelectItem {
 }
 
 interface Props {
-  onSearchClick: any;
+  onSearchClick: (params?: SearchQuery) => void;
 }
 
 export const Filters: FC<Props> = ({ onSearchClick }) => {
@@ -97,12 +98,12 @@ export const Filters: FC<Props> = ({ onSearchClick }) => {
       })
     );
     // make a request
-    onSearchClick(
+    onSearchClick({
       searchBarValue,
-      currentCatalogue,
-      currentPaymentFrom,
-      currentPaymentTo
-    );
+      catalogue: currentCatalogue,
+      paymentFrom: currentPaymentFrom,
+      paymentTo: currentPaymentTo,
+    });
   };
 
   return (

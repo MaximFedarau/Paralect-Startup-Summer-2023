@@ -4,7 +4,7 @@ import axios from "axios";
 import { Container, ContentContainer } from "./styles";
 import { Filters } from "./Filters";
 import { List } from "./List";
-import { Vacancy } from "@types";
+import { Vacancy, SearchQuery } from "@types";
 
 interface Vacancies {
   more: boolean;
@@ -17,12 +17,12 @@ export const Vacancies: FC = () => {
   const [isVacanciesLoading, setIsVacanciesLoading] = useState(true);
   const [isVacanciesError, setIsVacanciesError] = useState(false);
 
-  const onSearchClick = async (
-    searchBarValue?: string,
-    catalogue?: string,
-    paymentFrom?: string,
-    paymentTo?: string
-  ) => {
+  const onSearchClick = async ({
+    searchBarValue,
+    catalogue,
+    paymentFrom,
+    paymentTo,
+  }: SearchQuery) => {
     await getVacancies(searchBarValue, catalogue, paymentFrom, paymentTo);
   };
 

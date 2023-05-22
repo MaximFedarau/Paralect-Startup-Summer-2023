@@ -1,15 +1,15 @@
-import React, { FC, ChangeEventHandler } from "react";
+import React, { FC } from "react";
 
 import { Container, LoaderContainer } from "./styles";
 import { SearchBar } from "@components/Vacancies/SearchBar";
 import { NoVacancies, CustomLoader, VacancyItem } from "@components";
-import { Vacancy } from "@types";
+import { Vacancy, SearchQuery } from "@types";
 
 interface Props {
   vacancies: Vacancy[];
   isLoading: boolean;
   isError: boolean;
-  onSearchClick: any;
+  onSearchClick: (params?: SearchQuery) => void;
 }
 
 export const List: FC<Props> = ({

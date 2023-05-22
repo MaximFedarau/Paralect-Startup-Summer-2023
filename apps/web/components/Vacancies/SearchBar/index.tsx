@@ -10,10 +10,11 @@ import {
   setRequestState,
 } from "@store/vacanciesForm";
 import { Container, SubmitButton, SearchInput } from "./styles";
+import { SearchQuery } from "@types";
 
 interface Props {
   disabled?: boolean;
-  onClick: any;
+  onClick: (params?: SearchQuery) => void;
 }
 
 export const SearchBar: FC<Props> = ({ onClick, ...props }) => {
@@ -33,12 +34,12 @@ export const SearchBar: FC<Props> = ({ onClick, ...props }) => {
       })
     );
     // make a request
-    onClick(
-      currentSearchBarValue,
-      currentCatalogue,
-      currentPaymentFrom,
-      currentPaymentTo
-    );
+    onClick({
+      searchBarValue: currentSearchBarValue,
+      catalogue: currentCatalogue,
+      paymentFrom: currentPaymentFrom,
+      paymentTo: currentPaymentTo,
+    });
   };
 
   return (

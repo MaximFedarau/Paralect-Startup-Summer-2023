@@ -17,3 +17,10 @@ export interface Vacancy {
   payment_to: number;
   currency: string;
 }
+
+export interface SearchQuery {
+  searchBarValue?: string;
+  catalogue?: string;
+  paymentFrom?: string;
+  paymentTo?: string;
+}
