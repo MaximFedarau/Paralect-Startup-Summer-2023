@@ -4,16 +4,12 @@ import axios from "axios";
 import { Container, ContentContainer } from "./styles";
 import { Filters } from "./Filters";
 import { List } from "./List";
-import { Vacancy, SearchQuery } from "@types";
-
-interface Vacancies {
-  more: boolean;
-  total: number;
-  objects: Vacancy[];
-}
+import { Vacancies as VacanciesType, Vacancy, SearchQuery } from "@types";
 
 export const Vacancies: FC = () => {
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
+  const [total, setTotal] = useState(0);
+  const [activePage, setActivePage] = useState(1);
   const [isVacanciesLoading, setIsVacanciesLoading] = useState(true);
   const [isVacanciesError, setIsVacanciesError] = useState(false);
 
@@ -35,14 +31,16 @@ export const Vacancies: FC = () => {
     try {
       setIsVacanciesLoading(true);
       const {
-        data: { objects },
-      } = await axios.get<Vacancies>(
+        data: { objects, total },
+      } = await axios.get<VacanciesType>(
         `/api/vacancies?${
           keyword && keyword.trim().length ? `keyword=${keyword.trim()}` : ""
         }${catalogueValue ? `&catalogues=${catalogueValue}` : ""}${
           payment_from ? `&payment_from=${payment_from}` : ""
         }${payment_to ? `&payment_to=${payment_to}` : ""}`
       );
+      setTotal(total);
+      setActivePage(1);
       setVacancies(objects);
       setIsVacanciesError(false);
     } catch (error) {
@@ -60,6 +58,10 @@ export const Vacancies: FC = () => {
 
   const listProps = {
     vacancies,
+    setVacancies,
+    activePage,
+    setActivePage,
+    total,
     isLoading: isVacanciesLoading,
     isError: isVacanciesError,
     onSearchClick,

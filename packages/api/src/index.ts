@@ -8,15 +8,20 @@ export const getVacancies = async (
   keyword?: string,
   catalogues?: string,
   payment_from?: string,
-  payment_to?: string
+  payment_to?: string,
+  page?: string
 ) => {
   try {
     const { data } = await instance.get(
-      `${process.env.VACANCIES_API_URL}?published=1&count=10${
+      `${process.env.VACANCIES_API_URL}?published=1${
+        page ? `&page=${page}` : "&page=0"
+      }&count=4${
         keyword && keyword.trim().length ? `&keyword=${keyword}` : ""
       }${catalogues ? `&catalogues=${catalogues}` : ""}${
         payment_from ? `&payment_from=${payment_from}` : ""
-      }${payment_to ? `&payment_to=${payment_to}` : ""}`
+      }${payment_to ? `&payment_to=${payment_to}` : ""}${
+        payment_from || payment_to ? "&no_agreement=1" : ""
+      }`
     );
     return data;
   } catch (error) {

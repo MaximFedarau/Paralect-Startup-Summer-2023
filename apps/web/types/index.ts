@@ -18,6 +18,12 @@ export interface Vacancy {
   currency: string;
 }
 
+export interface Vacancies {
+  more: boolean;
+  total: number;
+  objects: Vacancy[];
+}
+
 export interface SearchQuery {
   searchBarValue?: string;
   catalogue?: string;

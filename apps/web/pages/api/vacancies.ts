@@ -7,6 +7,7 @@ interface Query {
   catalogues?: string;
   payment_from?: string;
   payment_to?: string;
+  page?: string;
 }
 
 export default async function handler(
@@ -14,14 +15,15 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const { keyword, catalogues, payment_from, payment_to } =
+    const { keyword, catalogues, payment_from, payment_to, page } =
       req.query as Query;
     try {
       const data = await getVacancies(
         keyword,
         catalogues,
         payment_from,
-        payment_to
+        payment_to,
+        page
       );
       res.status(200).send(data);
     } catch (error) {

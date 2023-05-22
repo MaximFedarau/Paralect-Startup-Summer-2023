@@ -1,4 +1,9 @@
 import styled from "@emotion/styled";
+import {
+  createPolymorphicComponent,
+  Pagination,
+  PaginationProps,
+} from "@mantine/core";
 
 import { MEDIA_QUERIES, SIZES } from "@constants";
 
@@ -26,3 +31,18 @@ export const LoaderContainer = styled.div`
     }
   }
 `;
+
+const _VacanciesPagination = styled(Pagination)`
+  align-self: center;
+
+  & .mantine-Pagination-control {
+    &[data-active] {
+      background-color: ${({ theme }) => theme.colors.blue[4]};
+    }
+  }
+`;
+
+export const VacanciesPagination = createPolymorphicComponent<
+  "div",
+  PaginationProps
+>(_VacanciesPagination);
