@@ -5,6 +5,8 @@ import {
   TextProps,
   Button,
   ButtonProps,
+  Loader,
+  LoaderProps,
 } from "@mantine/core";
 
 import { FONTS, SIZES } from "@constants";
@@ -44,4 +46,13 @@ export const _DarkBlueButton = styled(Button)`
 
 export const DarkBlueButton = createPolymorphicComponent<"button", ButtonProps>(
   _DarkBlueButton
+);
+
+const _CustomLoader = styled(Loader)`
+  align-self: center;
+  stroke: ${({ theme }) => theme.colors.blue[4]};
+`;
+
+export const CustomLoader = createPolymorphicComponent<"div", LoaderProps>(
+  _CustomLoader
 );

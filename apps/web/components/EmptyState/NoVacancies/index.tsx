@@ -4,7 +4,11 @@ import Image from "next/image";
 import Balloon from "@assets/images/balloon.svg";
 import { Container, NotFoundText } from "@components/EmptyState";
 
-export const NoVacancies: FC = () => {
+interface Props {
+  isError?: boolean;
+}
+
+export const NoVacancies: FC<Props> = ({ isError }) => {
   return (
     <Container>
       <Image
@@ -13,7 +17,11 @@ export const NoVacancies: FC = () => {
         placeholder="blur"
         blurDataURL="@assets/images/balloon.svg"
       />
-      <NotFoundText>По вашему запросу ничего не найдено</NotFoundText>
+      <NotFoundText>
+        {isError
+          ? "Произошла какая-то ошибка. Попробуйте еще раз позже"
+          : "По вашему запросу ничего не найдено"}
+      </NotFoundText>
     </Container>
   );
 };

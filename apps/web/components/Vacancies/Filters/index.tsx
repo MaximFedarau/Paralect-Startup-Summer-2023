@@ -11,9 +11,8 @@ import {
   FiltersContainer,
   FilterContainer,
   FilterSelect,
-  CustomLoader,
 } from "./styles";
-import { LargeText, DarkBlueButton } from "@components";
+import { LargeText, DarkBlueButton, CustomLoader } from "@components";
 
 interface Industry {
   key: number;
@@ -45,8 +44,8 @@ export const Filters: FC<Props> = ({
   paymentToValue,
   onPaymentToChange,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [catalogues, setCatalogues] = useState<SelectItem[]>([]);
+  const [isLoading, setIsLoading] = useState(catalogues.length ? false : true); // catalogues is REQUIRED
   const payment: SelectItem[] = [];
   for (let i = 1; i <= 30; ++i) {
     const value = String(i * 10000),

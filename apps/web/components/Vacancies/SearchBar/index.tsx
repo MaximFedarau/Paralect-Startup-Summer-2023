@@ -7,18 +7,19 @@ import { Container, SubmitButton, SearchInput } from "./styles";
 interface Props {
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
+  disabled?: boolean;
 }
 
 export const SearchBar: FC<Props> = (props) => {
   return (
-    <Container>
+    <Container disabled={props.disabled}>
       <SearchInput
         size="md"
         placeholder="Введите название вакансии"
         icon={<Image src={Magnifier} alt="Magnifier" />}
         {...props}
       />
-      <SubmitButton>Поиск</SubmitButton>
+      {!props.disabled && <SubmitButton>Поиск</SubmitButton>}
     </Container>
   );
 };

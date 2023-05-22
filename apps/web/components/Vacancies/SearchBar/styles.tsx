@@ -9,7 +9,7 @@ import {
 import { SIZES } from "@constants/theme";
 import { DarkBlueButton } from "@components/Reusables";
 
-export const Container = styled.div`
+export const Container = styled.div<{ disabled: boolean | undefined }>`
   display: flex;
   width: 100%;
   align-items: center;
@@ -17,7 +17,7 @@ export const Container = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.grey[3]};
   border-radius: ${SIZES.sm}px;
   overflow: hidden;
-  padding: 0 ${SIZES.md}px 0 0;
+  padding: 0 ${({ disabled }) => (disabled ? 0 : SIZES.md)}px 0 0;
 `;
 
 const _SubmitButton = styled(DarkBlueButton)`

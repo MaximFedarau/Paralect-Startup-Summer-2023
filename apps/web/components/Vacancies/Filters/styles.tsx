@@ -1,13 +1,7 @@
 import styled from "@emotion/styled";
 
 import { FONTS, MEDIA_QUERIES, SIZES } from "@constants";
-import {
-  createPolymorphicComponent,
-  Select,
-  SelectProps,
-  Loader,
-  LoaderProps,
-} from "@mantine/core";
+import { createPolymorphicComponent, Select, SelectProps } from "@mantine/core";
 
 export const Container = styled.div`
   display: flex;
@@ -77,13 +71,4 @@ const _FilterSelect = styled(Select)`
 
 export const FilterSelect = createPolymorphicComponent<"div", SelectProps>(
   _FilterSelect
-);
-
-const _CustomLoader = styled(Loader)`
-  align-self: center;
-  stroke: ${({ theme }) => theme.colors.blue[4]};
-`;
-
-export const CustomLoader = createPolymorphicComponent<"div", LoaderProps>(
-  _CustomLoader
 );

@@ -1,19 +1,41 @@
 import React, { FC, ChangeEventHandler } from "react";
 
-import { Container } from "./styles";
+import { Container, LoaderContainer } from "./styles";
 import { SearchBar } from "@components/Vacancies/SearchBar";
-import { NoVacancies } from "@components/EmptyState";
+import { NoVacancies, CustomLoader } from "@components";
+import { Vacancy } from "@types";
 
 interface Props {
   searchBarValue: string;
   onSearchBarChange: ChangeEventHandler<HTMLInputElement>;
+  vacancies: Vacancy[];
+  isLoading: boolean;
+  isError: boolean;
 }
 
-export const List: FC<Props> = ({ searchBarValue, onSearchBarChange }) => {
+export const List: FC<Props> = ({
+  searchBarValue,
+  onSearchBarChange,
+  vacancies,
+  isLoading,
+  isError,
+}) => {
   return (
-    <Container>
-      <SearchBar value={searchBarValue} onChange={onSearchBarChange} />
-      <NoVacancies />
-    </Container>
+    <>
+      {isLoading ? (
+        <LoaderContainer>
+          <CustomLoader />
+        </LoaderContainer>
+      ) : (
+        <Container>
+          <SearchBar
+            value={searchBarValue}
+            onChange={onSearchBarChange}
+            disabled={isError}
+          />
+          {vacancies.length ? <p>dfdf</p> : <NoVacancies isError={isError} />}
+        </Container>
+      )}
+    </>
   );
 };

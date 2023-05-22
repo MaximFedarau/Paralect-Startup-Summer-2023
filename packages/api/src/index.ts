@@ -6,7 +6,9 @@ const instance = createAPIInstance();
 
 export const getVacancies = async () => {
   try {
-    const { data } = await instance.get(process.env.VACANCIES_API_URL);
+    const { data } = await instance.get(
+      `${process.env.VACANCIES_API_URL}?page=0&count=10`
+    );
     return data;
   } catch (error) {
     const message = (error as AxiosError<string>).response?.data;
