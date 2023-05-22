@@ -16,14 +16,6 @@ export const Vacancies: FC = () => {
   const [catalogueValue, onCatalogueChange] = useState("");
   const [paymentFromValue, onPaymentFromChange] = useState("");
   const [paymentToValue, onPaymentToChange] = useState("");
-  const filtersProps = {
-    catalogueValue,
-    onCatalogueChange,
-    paymentFromValue,
-    onPaymentFromChange,
-    paymentToValue,
-    onPaymentToChange,
-  };
 
   const [searchBarValue, onSearchBarChange] = useState("");
   const handleSearchBar = ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -35,10 +27,20 @@ export const Vacancies: FC = () => {
   const [isVacanciesError, setIsVacanciesError] = useState(false);
 
   const onSearchClick = async () => {
-    await getVacancies(searchBarValue);
+    await getVacancies(
+      searchBarValue,
+      catalogueValue,
+      paymentFromValue,
+      paymentToValue
+    );
   };
 
-  const getVacancies = async (keyword?: string) => {
+  const getVacancies = async (
+    keyword?: string,
+    catalogueValue?: string,
+    payment_from?: string,
+    payment_to?: string
+  ) => {
     try {
       setIsVacanciesLoading(true);
       const {
@@ -46,7 +48,9 @@ export const Vacancies: FC = () => {
       } = await axios.get<Vacancies>(
         `/api/vacancies?${
           keyword && keyword.trim().length ? `keyword=${keyword.trim()}` : ""
-        }`
+        }${catalogueValue ? `&catalogues=${catalogueValue}` : ""}${
+          payment_from ? `&payment_from=${payment_from}` : ""
+        }${payment_to ? `&payment_to=${payment_to}` : ""}`
       );
       setVacancies(objects);
       setIsVacanciesError(false);
@@ -62,6 +66,16 @@ export const Vacancies: FC = () => {
   useEffect(() => {
     getVacancies();
   }, []);
+
+  const filtersProps = {
+    catalogueValue,
+    onCatalogueChange,
+    paymentFromValue,
+    onPaymentFromChange,
+    paymentToValue,
+    onPaymentToChange,
+    onSearchClick,
+  };
 
   const listProps = {
     searchBarValue,

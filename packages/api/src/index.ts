@@ -4,12 +4,19 @@ import { createAPIInstance } from "./instance";
 
 const instance = createAPIInstance();
 
-export const getVacancies = async (keyword?: string) => {
+export const getVacancies = async (
+  keyword?: string,
+  catalogues?: string,
+  payment_from?: string,
+  payment_to?: string
+) => {
   try {
     const { data } = await instance.get(
-      `${process.env.VACANCIES_API_URL}?page=0&count=10${
+      `${process.env.VACANCIES_API_URL}?published=1&count=10${
         keyword && keyword.trim().length ? `&keyword=${keyword}` : ""
-      }`
+      }${catalogues ? `&catalogues=${catalogues}` : ""}${
+        payment_from ? `&payment_from=${payment_from}` : ""
+      }${payment_to ? `&payment_to=${payment_to}` : ""}`
     );
     return data;
   } catch (error) {

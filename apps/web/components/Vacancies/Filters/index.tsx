@@ -34,6 +34,7 @@ interface Props {
   onPaymentFromChange: (value: string) => void;
   paymentToValue: string;
   onPaymentToChange: (value: string) => void;
+  onSearchClick: () => void;
 }
 
 export const Filters: FC<Props> = ({
@@ -43,6 +44,7 @@ export const Filters: FC<Props> = ({
   onPaymentFromChange,
   paymentToValue,
   onPaymentToChange,
+  onSearchClick,
 }) => {
   const [catalogues, setCatalogues] = useState<SelectItem[]>([]);
   const [isLoading, setIsLoading] = useState(catalogues.length ? false : true); // catalogues is REQUIRED
@@ -118,7 +120,7 @@ export const Filters: FC<Props> = ({
                 onChange={onPaymentToChange}
               />
             </FilterContainer>
-            <DarkBlueButton>Применить</DarkBlueButton>
+            <DarkBlueButton onClick={onSearchClick}>Применить</DarkBlueButton>
           </FiltersContainer>
         </Container>
       )}
