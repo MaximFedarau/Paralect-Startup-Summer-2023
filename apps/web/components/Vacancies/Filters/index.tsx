@@ -1,5 +1,6 @@
-import React, { FC } from "react";
+import React, { FC, useState, useEffect } from "react";
 import Image from "next/image";
+import axios from "axios";
 
 import Cross from "@assets/icons/cross.svg";
 import ChevronDown from "@assets/icons/chevron_down.svg";
@@ -10,34 +11,118 @@ import {
   FiltersContainer,
   FilterContainer,
   FilterSelect,
+  CustomLoader,
 } from "./styles";
 import { LargeText, DarkBlueButton } from "@components";
 
-export const Filters: FC = () => {
+interface Industry {
+  key: number;
+  title: string;
+  title_rus: string;
+  title_trimmed: string;
+  url_rus: string;
+}
+
+interface SelectItem {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  catalogueValue: string;
+  onCatalogueChange: (value: string) => void;
+  paymentFromValue: string;
+  onPaymentFromChange: (value: string) => void;
+  paymentToValue: string;
+  onPaymentToChange: (value: string) => void;
+}
+
+export const Filters: FC<Props> = ({
+  catalogueValue,
+  onCatalogueChange,
+  paymentFromValue,
+  onPaymentFromChange,
+  paymentToValue,
+  onPaymentToChange,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [catalogues, setCatalogues] = useState<SelectItem[]>([]);
+  const payment: SelectItem[] = [];
+  for (let i = 1; i <= 30; ++i) {
+    const value = String(i * 10000),
+      currency = value + "₽";
+    payment.push({ value: value, label: currency });
+  }
+
+  const loadCatalogues = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios<Industry[]>("/api/catalogues");
+      // transfrom API data
+      const selectData: SelectItem[] = [];
+      data.map(({ key, title }) =>
+        selectData.push({ value: String(key), label: title })
+      );
+      setCatalogues(selectData);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (!catalogues.length) loadCatalogues();
+  }, [catalogues]);
+
+  const onDrop = () => {
+    onCatalogueChange("");
+    onPaymentFromChange("");
+    onPaymentToChange("");
+  };
+
   return (
-    <Container>
-      <HeaderContainer>
-        <LargeText>Фильтры</LargeText>
-        <DropZone>
-          Сбросить все
-          <Image alt="Cross" src={Cross} />
-        </DropZone>
-      </HeaderContainer>
-      <FiltersContainer>
-        <FilterContainer>
-          <FilterSelect
-            label="Отрасль"
-            placeholder="Выберите отрасль"
-            rightSection={<Image alt="Chevron Down" src={ChevronDown} />}
-            data={["item"]}
-          />
-        </FilterContainer>
-        <FilterContainer>
-          <FilterSelect label="Оклад" placeholder="От" data={["item"]} />
-          <FilterSelect placeholder="До" data={["item"]} />
-        </FilterContainer>
-        <DarkBlueButton>Применить</DarkBlueButton>
-      </FiltersContainer>
-    </Container>
+    <>
+      {isLoading ? (
+        <CustomLoader />
+      ) : (
+        <Container>
+          <HeaderContainer>
+            <LargeText>Фильтры</LargeText>
+            <DropZone onClick={onDrop}>
+              Сбросить все
+              <Image alt="Cross" src={Cross} />
+            </DropZone>
+          </HeaderContainer>
+          <FiltersContainer>
+            <FilterContainer>
+              <FilterSelect
+                label="Отрасль"
+                placeholder="Выберите отрасль"
+                rightSection={<Image alt="Chevron Down" src={ChevronDown} />}
+                value={catalogueValue}
+                onChange={onCatalogueChange}
+                data={catalogues}
+              />
+            </FilterContainer>
+            <FilterContainer>
+              <FilterSelect
+                label="Оклад"
+                placeholder="От"
+                data={payment}
+                value={paymentFromValue}
+                onChange={onPaymentFromChange}
+              />
+              <FilterSelect
+                placeholder="До"
+                data={payment}
+                value={paymentToValue}
+                onChange={onPaymentToChange}
+              />
+            </FilterContainer>
+            <DarkBlueButton>Применить</DarkBlueButton>
+          </FiltersContainer>
+        </Container>
+      )}
+    </>
   );
 };

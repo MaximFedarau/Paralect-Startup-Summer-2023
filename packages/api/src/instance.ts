@@ -28,6 +28,7 @@ export const createAPIInstance = () => {
     baseURL: process.env.API_URL,
     headers: {
       "x-secret-key": process.env.SECRET_KEY,
+      "X-Api-App-Id": process.env.CLIENT_SECRET,
     },
   });
 

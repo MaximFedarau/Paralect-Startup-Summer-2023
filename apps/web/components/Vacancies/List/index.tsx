@@ -1,13 +1,18 @@
-import React, { FC } from "react";
+import React, { FC, ChangeEventHandler } from "react";
 
 import { Container } from "./styles";
 import { SearchBar } from "@components/Vacancies/SearchBar";
 import { NoVacancies } from "@components/EmptyState";
 
-export const List: FC = () => {
+interface Props {
+  searchBarValue: string;
+  onSearchBarChange: ChangeEventHandler<HTMLInputElement>;
+}
+
+export const List: FC<Props> = ({ searchBarValue, onSearchBarChange }) => {
   return (
     <Container>
-      <SearchBar />
+      <SearchBar value={searchBarValue} onChange={onSearchBarChange} />
       <NoVacancies />
     </Container>
   );

@@ -9,6 +9,7 @@
         "API_URL",
         "ACCESS_TOKEN_API_URL",
         "VACANCIES_API_URL",
+        "CATALOGUES_API_URL",
         "LOGIN",
         "PASSWORD",
         "CLIENT_ID",
