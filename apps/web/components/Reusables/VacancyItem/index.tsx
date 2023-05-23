@@ -8,6 +8,7 @@ import {
   JobInfoContainer,
   LocationInfoContainer,
   DelimeterContainer,
+  WrapperLink,
 } from "./styles";
 import { SemiBoldText } from "@components";
 import { Vacancy } from "@types";
@@ -25,7 +26,12 @@ const transformPayment = (
   if (paymentTo !== 0) return `${prefix} ${paymentTo}`;
 };
 
-export const VacancyItem: FC<Vacancy> = ({
+interface Props extends Vacancy {
+  isLink?: boolean;
+}
+
+export const VacancyItem: FC<Props> = ({
+  id,
   profession,
   type_of_work,
   town,
@@ -33,22 +39,25 @@ export const VacancyItem: FC<Vacancy> = ({
   payment_to,
   agreement,
   currency,
+  isLink = true,
 }) => {
   return (
-    <Container>
-      <ProfessionTitle>{profession}</ProfessionTitle>
-      <JobInfoContainer>
-        <SemiBoldText>
-          {transformPayment(payment_from, payment_to, agreement)}{" "}
-          {!agreement && currency}
-        </SemiBoldText>
-        <DelimeterContainer>&#x2022;</DelimeterContainer>
-        {type_of_work.title}
-      </JobInfoContainer>
-      <LocationInfoContainer>
-        <Image alt="Location" src={Location} />
-        {town.title}
-      </LocationInfoContainer>
-    </Container>
+    <WrapperLink href={`/vacancy/${id}`} target="_blank">
+      <Container>
+        <ProfessionTitle isLink={isLink}>{profession}</ProfessionTitle>
+        <JobInfoContainer>
+          <SemiBoldText>
+            {transformPayment(payment_from, payment_to, agreement)}{" "}
+            {!agreement && currency}
+          </SemiBoldText>
+          <DelimeterContainer>&#x2022;</DelimeterContainer>
+          {type_of_work.title}
+        </JobInfoContainer>
+        <LocationInfoContainer>
+          <Image alt="Location" src={Location} />
+          {town.title}
+        </LocationInfoContainer>
+      </Container>
+    </WrapperLink>
   );
 };

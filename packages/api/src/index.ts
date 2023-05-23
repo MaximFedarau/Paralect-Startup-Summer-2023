@@ -26,6 +26,10 @@ export const getVacancies = async (
     return data;
   } catch (error) {
     const message = (error as AxiosError<string>).response?.data;
+    console.error(
+      error,
+      `Getting Vacancies API with keyword=${keyword} catalogues=${catalogues} payment_from=${payment_from} payment_to=${payment_to} page=${page}`
+    );
     throw Error(message || "Error occurred, while getting vacancies");
   }
 };
@@ -36,6 +40,20 @@ export const getCatalogues = async () => {
     return data;
   } catch (error) {
     const message = (error as AxiosError<string>).response?.data;
+    console.error(error, "Getting Catalogues API");
     throw Error(message || "Error occurred, while getting catalogues");
+  }
+};
+
+export const getVacancy = async (id: string) => {
+  try {
+    const { data } = await instance.get(
+      `${process.env.VACANCIES_API_URL}/${id}`
+    );
+    return data;
+  } catch (error) {
+    const message = (error as AxiosError<string>).response?.data;
+    console.error(error, `Getting Vaccancy with id=${id}`);
+    throw Error(message || "Error occurred, while getting vacancy");
   }
 };

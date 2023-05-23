@@ -16,6 +16,7 @@ export interface Vacancy {
   payment_from: number;
   payment_to: number;
   currency: string;
+  vacancyRichText: string;
 }
 
 export interface Vacancies {

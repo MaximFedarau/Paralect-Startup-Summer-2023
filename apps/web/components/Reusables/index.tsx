@@ -64,4 +64,25 @@ export const CustomLoader = createPolymorphicComponent<"div", LoaderProps>(
   _CustomLoader
 );
 
+export const VacancyContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
+export const VacancyContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  padding: ${SIZES["2xl"]}px 0;
+  gap: ${SIZES.xl}px;
+`;
+
+export const VacancyDescription = styled.div`
+  width: 100%;
+  background-color: white;
+  padding: ${SIZES["2xl"]}px;
+  border-radius: ${SIZES.md}px;
+`;
+
 export * from "./VacancyItem";

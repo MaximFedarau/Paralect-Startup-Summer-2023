@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { createPolymorphicComponent, Text, TextProps } from "@mantine/core";
+import Link from "next/link";
 
 import { SIZES, FONTS } from "@constants";
 
@@ -13,8 +13,9 @@ export const Container = styled.div`
   width: 100%;
 `;
 
-export const ProfessionTitle = styled.div`
-  color: ${({ theme }) => theme.colors.blue[4]};
+export const ProfessionTitle = styled.div<{ isLink: boolean }>`
+  color: ${({ theme, isLink }) =>
+    isLink ? theme.colors.blue[4] : theme.colors.grey[6]};
   font-size: ${FONTS.sizes.xl}px;
   font-weight: ${FONTS.weights.semiBold};
 `;
@@ -32,4 +33,9 @@ export const DelimeterContainer = styled.div`
 export const LocationInfoContainer = styled.div`
   display: flex;
   gap: ${SIZES.sm}px;
+`;
+
+export const WrapperLink = styled(Link)`
+  cursor: pointer;
+  width: 100%;
 `;
