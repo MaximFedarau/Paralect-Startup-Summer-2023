@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import storage from "redux-persist/lib/storage";
 import {
   persistReducer,
   PersistConfig,
@@ -14,6 +13,30 @@ import {
 
 import { rootReducer } from "./rootReducer";
 import { listener } from "./middlewares";
+
+import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+
+// fixes redux-persist failed to create sync storage. falling back to noop storage - https://github.com/vercel/next.js/discussions/15687
+const createNoopStorage = () => {
+  return {
+    getItem() {
+      return Promise.resolve(null);
+    },
+    setItem() {
+      return Promise.resolve();
+    },
+    removeItem() {
+      return Promise.resolve();
+    },
+  };
+};
+
+const storage =
+  typeof window !== "undefined"
+    ? createWebStorage("local")
+    : createNoopStorage();
+
+// configuring store
 
 const persistConfig: PersistConfig<unknown, any, any, any> = {
   key: "root",

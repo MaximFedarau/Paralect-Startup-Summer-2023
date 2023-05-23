@@ -2,13 +2,14 @@ import React, { FC, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-import { Container, VacanciesPagination } from "./styles";
+import { Container } from "./styles";
 import { SearchBar } from "@components/Vacancies/SearchBar";
 import {
   NoVacancies,
   CustomLoader,
   VacancyItem,
   LoaderContainer,
+  VacanciesPagination,
 } from "@components";
 import { Vacancies, Vacancy, SearchQuery } from "@types";
 import {
@@ -84,7 +85,7 @@ export const List: FC<Props> = ({
           {vacancies.map((vacancyInfo) => (
             <VacancyItem key={vacancyInfo.id} {...vacancyInfo} />
           ))}
-          {total >= 4 && (
+          {total > 4 && (
             <VacanciesPagination
               total={Math.min(Math.ceil(total / 4), 125)}
               value={activePage}

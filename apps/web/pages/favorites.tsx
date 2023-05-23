@@ -10,6 +10,8 @@ import {
   LoaderContainer,
   VacancyContainer,
   VacancyContentContainer,
+  VacanciesPagination,
+  NoVacancies,
 } from "@components";
 import { favoritesSelector } from "@store/favorites";
 import { Vacancies, Vacancy } from "@types";
@@ -34,24 +36,33 @@ const Favorites: FC = () => {
   const [isFavoritesError, setIsFavoritesError] = useState(false);
   const [isFavoritesLoading, setIsFavoritesLoading] = useState(true);
 
-  const getFavorites = async () => {
+  // we need to get all favorites to handle vacancies shift (when on one page we have 3 vacancies, but on the others we have 4)
+  // getting all favorites from all pages
+  const getFavorites = async (page: number) => {
+    if (page > 500 || !isFavoritesLoading) return; // pages limit || finished loading
     try {
       setIsFavoritesLoading(true);
       const {
-        data: { objects, total },
+        data: { objects, total, more },
       } = await axios.get<Vacancies>(
-        `/api/favorites?${transformFavorites(favoritesIds)}`
+        `/api/favorites?${transformFavorites(favoritesIds)}&page=${page}`
       );
       setTotal(total);
-      setActivePage(1);
-      setFavorites(objects);
-      setIsFavoritesError(false);
+      setFavorites((state) => state.concat(objects));
+      if (more) getFavorites(page + 1);
+      else {
+        // finished loading
+        setIsFavoritesLoading(false);
+        setIsFavoritesError(false);
+      }
     } catch (error) {
       console.error(error);
       setIsFavoritesError(true);
-    } finally {
-      setIsFavoritesLoading(false);
     }
+  };
+
+  const onPageChange = (value: number) => {
+    setActivePage(value);
   };
 
   // remove vacancies from favorites
@@ -60,16 +71,28 @@ const Favorites: FC = () => {
       actionCreator: removeFavorite,
       effect: ({ payload }) => {
         setFavorites(favorites.filter(({ id }) => id != payload));
+        setTotal(total - 1);
       },
     });
 
     return () => unsubscribe();
-  }, [favorites]);
+  }, [favorites, total]);
 
   // initial favorites fetch
   useEffect(() => {
-    getFavorites();
-  }, []);
+    if (favoritesIds.length) getFavorites(0);
+  }, [favoritesIds]);
+
+  // go to the previous page if current is empty
+  useEffect(() => {
+    if (
+      !favorites.slice((activePage - 1) * 4, Math.min(activePage * 4, total))
+        .length &&
+      total > 0
+    ) {
+      setActivePage(activePage - 1);
+    }
+  }, [favorites, activePage, total]);
 
   return (
     <>
@@ -77,7 +100,9 @@ const Favorites: FC = () => {
         <title>Избранное</title>
       </Head>
       <VacancyContainer>
-        {favoritesIds.length ? (
+        {isFavoritesError ? (
+          <NoVacancies isError />
+        ) : favoritesIds.length ? (
           isFavoritesLoading ? (
             <>
               <LoaderContainer>
@@ -86,9 +111,18 @@ const Favorites: FC = () => {
             </>
           ) : (
             <VacancyContentContainer>
-              {favorites.map((info) => (
-                <VacancyItem key={info.id} {...info} />
-              ))}
+              {favorites
+                .slice((activePage - 1) * 4, Math.min(activePage * 4, total))
+                .map((info) => (
+                  <VacancyItem key={info.id} {...info} />
+                ))}
+              {total > 4 && (
+                <VacanciesPagination
+                  total={Math.ceil(total / 4)}
+                  value={activePage}
+                  onChange={onPageChange}
+                />
+              )}
             </VacancyContentContainer>
           )
         ) : (

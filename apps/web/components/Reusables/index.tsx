@@ -7,6 +7,8 @@ import {
   ButtonProps,
   Loader,
   LoaderProps,
+  Pagination,
+  PaginationProps,
 } from "@mantine/core";
 
 import { FONTS, SIZES, MEDIA_QUERIES } from "@constants";
@@ -101,5 +103,20 @@ export const VacancyDescription = styled.div`
   border-radius: ${SIZES.md}px;
   overflow: scroll;
 `;
+
+const _VacanciesPagination = styled(Pagination)`
+  align-self: center;
+
+  & .mantine-Pagination-control {
+    &[data-active] {
+      background-color: ${({ theme }) => theme.colors.blue[4]};
+    }
+  }
+`;
+
+export const VacanciesPagination = createPolymorphicComponent<
+  "div",
+  PaginationProps
+>(_VacanciesPagination);
 
 export * from "./VacancyItem";

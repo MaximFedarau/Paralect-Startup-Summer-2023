@@ -58,10 +58,10 @@ export const getVacancy = async (id: string) => {
   }
 };
 
-export const getFavorites = async (ids: string) => {
+export const getFavorites = async (ids: string, page?: string) => {
   try {
     const { data } = await instance.get(
-      `${process.env.VACANCIES_API_URL}?${ids}`
+      `${process.env.VACANCIES_API_URL}?${ids}&page=${page || "0"}&count=100`
     );
     return data;
   } catch (error) {
