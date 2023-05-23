@@ -13,11 +13,20 @@ export const Container = styled.div`
   width: 100%;
 `;
 
+export const TitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const ProfessionTitle = styled.div<{ isLink: boolean }>`
   color: ${({ theme, isLink }) =>
     isLink ? theme.colors.blue[4] : theme.colors.grey[6]};
   font-size: ${FONTS.sizes.xl}px;
   font-weight: ${FONTS.weights.semiBold};
+`;
+
+export const FavoriteButton = styled.div`
+  pointer-events: auto;
 `;
 
 export const JobInfoContainer = styled.div`

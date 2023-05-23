@@ -1,10 +1,14 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import Image from "next/image";
 
 import Location from "@assets/icons/location.svg";
+import Star from "@assets/icons/star.svg";
+import FilledStar from "@assets/icons/filled_star.svg";
 import {
   Container,
+  TitleContainer,
   ProfessionTitle,
+  FavoriteButton,
   JobInfoContainer,
   LocationInfoContainer,
   DelimeterContainer,
@@ -41,10 +45,21 @@ export const VacancyItem: FC<Props> = ({
   currency,
   isLink = true,
 }) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+  const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsFavorite(!isFavorite);
+  };
   return (
     <WrapperLink href={`/vacancy/${id}`} target="_blank" isLink={isLink}>
       <Container>
-        <ProfessionTitle isLink={isLink}>{profession}</ProfessionTitle>
+        <TitleContainer>
+          <ProfessionTitle isLink={isLink}>{profession}</ProfessionTitle>
+          <FavoriteButton onClick={onClick}>
+            <Image alt="Star" src={isFavorite ? FilledStar : Star} />
+          </FavoriteButton>
+        </TitleContainer>
         <JobInfoContainer>
           <SemiBoldText>
             {transformPayment(payment_from, payment_to, agreement)}{" "}
