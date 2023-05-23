@@ -35,7 +35,7 @@ export const LocationInfoContainer = styled.div`
   gap: ${SIZES.sm}px;
 `;
 
-export const WrapperLink = styled(Link)`
-  cursor: pointer;
+export const WrapperLink = styled(Link)<{ isLink: boolean }>`
   width: 100%;
+  pointer-events: ${({ isLink }) => (isLink ? "auto" : "none")};
 `;

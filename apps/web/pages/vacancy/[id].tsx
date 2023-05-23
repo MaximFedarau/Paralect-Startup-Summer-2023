@@ -10,6 +10,7 @@ import {
   VacancyDescription,
 } from "@components";
 import { Vacancy } from "@types";
+import Head from "next/head";
 
 interface Query {
   id?: string;
@@ -43,16 +44,29 @@ interface Props {
 }
 
 const VacancyPage: FC<Props> = ({ isError, data }) => {
-  if (isError) return <NoData />;
+  if (isError)
+    return (
+      <>
+        <Head>
+          <title>404</title>
+        </Head>
+        <NoData />;
+      </>
+    );
   return (
-    <VacancyContainer>
-      <VacancyContentContainer>
-        <VacancyItem isLink={false} {...data} />
-        <VacancyDescription
-          dangerouslySetInnerHTML={{ __html: data.vacancyRichText }}
-        />
-      </VacancyContentContainer>
-    </VacancyContainer>
+    <>
+      <Head>
+        <title>{data.profession}</title>
+      </Head>
+      <VacancyContainer>
+        <VacancyContentContainer>
+          <VacancyItem isLink={false} {...data} />
+          <VacancyDescription
+            dangerouslySetInnerHTML={{ __html: data.vacancyRichText }}
+          />
+        </VacancyContentContainer>
+      </VacancyContainer>
+    </>
   );
 };
 

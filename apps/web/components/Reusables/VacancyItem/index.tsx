@@ -42,7 +42,7 @@ export const VacancyItem: FC<Props> = ({
   isLink = true,
 }) => {
   return (
-    <WrapperLink href={`/vacancy/${id}`} target="_blank">
+    <WrapperLink href={`/vacancy/${id}`} target="_blank" isLink={isLink}>
       <Container>
         <ProfessionTitle isLink={isLink}>{profession}</ProfessionTitle>
         <JobInfoContainer>
