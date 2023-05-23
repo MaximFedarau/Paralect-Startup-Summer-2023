@@ -87,7 +87,7 @@ export const List: FC<Props> = ({
           ))}
           {total > 4 && (
             <VacanciesPagination
-              total={Math.min(Math.ceil(total / 4), 125)}
+              total={Math.min(Math.ceil(total / 4), 126)}
               value={activePage}
               onChange={onPageChange}
               disabled={isPageLoading}

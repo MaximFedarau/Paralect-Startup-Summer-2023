@@ -39,7 +39,7 @@ const Favorites: FC = () => {
   // we need to get all favorites to handle vacancies shift (when on one page we have 3 vacancies, but on the others we have 4)
   // getting all favorites from all pages
   const getFavorites = async (page: number) => {
-    if (page > 500 || !isFavoritesLoading) return; // pages limit || finished loading
+    if (favorites.length === 500 || !isFavoritesLoading) return; // data limit || finished loading
     try {
       setIsFavoritesLoading(true);
       const {
