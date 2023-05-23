@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 
 import { getVacancy } from "api";
 import {
@@ -10,7 +11,6 @@ import {
   VacancyDescription,
 } from "@components";
 import { Vacancy } from "@types";
-import Head from "next/head";
 
 interface Query {
   id?: string;
