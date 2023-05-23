@@ -2,9 +2,14 @@ import React, { FC, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-import { Container, LoaderContainer, VacanciesPagination } from "./styles";
+import { Container, VacanciesPagination } from "./styles";
 import { SearchBar } from "@components/Vacancies/SearchBar";
-import { NoVacancies, CustomLoader, VacancyItem } from "@components";
+import {
+  NoVacancies,
+  CustomLoader,
+  VacancyItem,
+  LoaderContainer,
+} from "@components";
 import { Vacancies, Vacancy, SearchQuery } from "@types";
 import {
   requestSearchBarValueSelector,

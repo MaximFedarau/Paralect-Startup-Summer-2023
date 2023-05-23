@@ -13,6 +13,7 @@ import {
 } from "redux-persist";
 
 import { rootReducer } from "./rootReducer";
+import { listener } from "./middlewares";
 
 const persistConfig: PersistConfig<unknown, any, any, any> = {
   key: "root",
@@ -29,7 +30,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).prepend(listener.middleware),
 });
 
 export const persistor = persistStore(store);

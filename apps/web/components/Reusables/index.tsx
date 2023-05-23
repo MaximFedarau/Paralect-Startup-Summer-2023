@@ -9,7 +9,7 @@ import {
   LoaderProps,
 } from "@mantine/core";
 
-import { FONTS, SIZES } from "@constants";
+import { FONTS, SIZES, MEDIA_QUERIES } from "@constants";
 
 const _DefaultText = styled(Text)`
   color: ${({ theme }) => theme.colors.grey[6]};
@@ -55,6 +55,18 @@ export const DarkBlueButton = createPolymorphicComponent<"button", ButtonProps>(
   _DarkBlueButton
 );
 
+export const LoaderContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+
+  @media only screen and (${MEDIA_QUERIES.tablet}) {
+    * {
+      align-self: center;
+    }
+  }
+`;
+
 const _CustomLoader = styled(Loader)`
   align-self: center;
   stroke: ${({ theme }) => theme.colors.blue[4]};
@@ -68,13 +80,17 @@ export const VacancyContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
+  padding: ${SIZES["2xl"]}px 0;
+
+  * {
+    box-sizing: border-box;
+  }
 `;
 
 export const VacancyContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 60%;
-  padding: ${SIZES["2xl"]}px 0;
+  width: 70%;
   gap: ${SIZES.xl}px;
 `;
 
@@ -83,6 +99,7 @@ export const VacancyDescription = styled.div`
   background-color: white;
   padding: ${SIZES["2xl"]}px;
   border-radius: ${SIZES.md}px;
+  overflow: scroll;
 `;
 
 export * from "./VacancyItem";
