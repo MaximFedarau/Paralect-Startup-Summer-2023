@@ -1,10 +1,16 @@
 import React, { FC } from "react";
+import Head from "next/head";
+
+import { Vacancies } from "@components";
 
 const Home: FC = () => {
   return (
-    <div>
-      <p>Start</p>
-    </div>
+    <>
+      <Head>
+        <title>Поиск вакансий</title>
+      </Head>
+      <Vacancies />
+    </>
   );
 };
 

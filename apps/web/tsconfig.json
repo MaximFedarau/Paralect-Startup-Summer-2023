@@ -16,7 +16,13 @@
       "@constants/*": ["constants/*"],
       "@constants": ["constants"],
 
-      "@assets/*": ["assets/*"]
+      "@assets/*": ["assets/*"],
+
+      "@types/*": ["types/*"],
+      "@types": ["types"],
+
+      "@store/*": ["store/*"],
+      "@store": ["store"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
