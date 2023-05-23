@@ -2,9 +2,16 @@ import React, { FC, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-import { Container, LoaderContainer, VacanciesPagination } from "./styles";
+import { Container } from "./styles";
 import { SearchBar } from "@components/Vacancies/SearchBar";
-import { NoVacancies, CustomLoader, VacancyItem } from "@components";
+import {
+  ErrorState,
+  CustomLoader,
+  VacancyItem,
+  LoaderContainer,
+  VacanciesPagination,
+  NoData,
+} from "@components";
 import { Vacancies, Vacancy, SearchQuery } from "@types";
 import {
   requestSearchBarValueSelector,
@@ -70,16 +77,18 @@ export const List: FC<Props> = ({
         disabled={isError || isLoading || isPageError || isPageLoading}
         onClick={onSearchClick}
       />
-      {isLoading || isPageLoading ? (
+      {isError || isPageError ? (
+        <ErrorState />
+      ) : isLoading || isPageLoading ? (
         <LoaderContainer>
           <CustomLoader />
         </LoaderContainer>
-      ) : vacancies.length ? (
+      ) : vacancies.length > 0 ? (
         <>
           {vacancies.map((vacancyInfo) => (
             <VacancyItem key={vacancyInfo.id} {...vacancyInfo} />
           ))}
-          {total >= 4 && (
+          {total > 4 && (
             <VacanciesPagination
               total={Math.min(Math.ceil(total / 4), 125)}
               value={activePage}
@@ -89,7 +98,7 @@ export const List: FC<Props> = ({
           )}
         </>
       ) : (
-        <NoVacancies isError={isError || isPageError} />
+        <NoData />
       )}
     </Container>
   );

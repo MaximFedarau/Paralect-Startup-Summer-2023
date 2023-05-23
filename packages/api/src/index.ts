@@ -57,3 +57,16 @@ export const getVacancy = async (id: string) => {
     throw Error(message || "Error occurred, while getting vacancy");
   }
 };
+
+export const getFavorites = async (ids: string, page?: string) => {
+  try {
+    const { data } = await instance.get(
+      `${process.env.VACANCIES_API_URL}?${ids}&page=${page || "0"}&count=100`
+    );
+    return data;
+  } catch (error) {
+    const message = (error as AxiosError<string>).response?.data;
+    console.error(error, `Getting Favorites with ids=${ids}`);
+    throw Error(message || "Error occurred, while getting favorites");
+  }
+};

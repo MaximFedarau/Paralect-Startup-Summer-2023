@@ -1,3 +1,3 @@
 export * from "./NoData";
-export * from "./NoVacancies";
+export * from "./ErrorState";
 export * from "./Reusables";

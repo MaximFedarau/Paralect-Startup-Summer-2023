@@ -6,6 +6,7 @@ import axios from "axios";
 import Cross from "@assets/icons/cross.svg";
 import ChevronDown from "@assets/icons/chevron_down.svg";
 import {
+  ErrorContainer,
   Container,
   HeaderContainer,
   DropZone,
@@ -22,7 +23,12 @@ import {
   currentSearchBarValueSelector,
   setRequestState,
 } from "@store/vacanciesForm";
-import { LargeText, DarkBlueButton, CustomLoader } from "@components";
+import {
+  LargeText,
+  DarkBlueButton,
+  CustomLoader,
+  ErrorState,
+} from "@components";
 import { SearchQuery } from "@types";
 
 interface Industry {
@@ -40,15 +46,20 @@ interface SelectItem {
 
 interface Props {
   onSearchClick: (params?: SearchQuery) => void;
+  isRequestProcessing?: boolean;
 }
 
-export const Filters: FC<Props> = ({ onSearchClick }) => {
+export const Filters: FC<Props> = ({
+  onSearchClick,
+  isRequestProcessing = false,
+}) => {
   const dispatch = useDispatch();
   const { currentCatalogue, currentPaymentFrom, currentPaymentTo } =
     useSelector(currentFiltersSelector);
   const searchBarValue = useSelector(currentSearchBarValueSelector);
 
   const [catalogues, setCatalogues] = useState<SelectItem[]>([]);
+  const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(catalogues.length ? false : true); // catalogues is REQUIRED
   const payment: SelectItem[] = [];
   for (let i = 1; i <= 30; ++i) {
@@ -68,8 +79,10 @@ export const Filters: FC<Props> = ({ onSearchClick }) => {
       );
       setCatalogues(selectData);
       setIsLoading(false);
+      setIsError(false);
     } catch (error) {
       console.error(error);
+      setIsError(true);
     }
   };
 
@@ -108,7 +121,11 @@ export const Filters: FC<Props> = ({ onSearchClick }) => {
 
   return (
     <>
-      {isLoading ? (
+      {isError ? (
+        <ErrorContainer>
+          <ErrorState />
+        </ErrorContainer>
+      ) : isLoading ? (
         <CustomLoader />
       ) : (
         <Container>
@@ -147,7 +164,9 @@ export const Filters: FC<Props> = ({ onSearchClick }) => {
                 onChange={(value) => dispatch(setCurrentPaymentTo(value || ""))}
               />
             </FilterContainer>
-            <DarkBlueButton onClick={onSubmit}>Применить</DarkBlueButton>
+            <DarkBlueButton onClick={onSubmit} disabled={isRequestProcessing}>
+              Применить
+            </DarkBlueButton>
           </FiltersContainer>
         </Container>
       )}

@@ -9,7 +9,11 @@ import {
   NotFoundButton,
 } from "@components/EmptyState";
 
-export const NoData: FC = () => {
+interface Props {
+  navigateHome?: boolean;
+}
+
+export const NoData: FC<Props> = ({ navigateHome = false }) => {
   return (
     <Container>
       <Image
@@ -19,9 +23,11 @@ export const NoData: FC = () => {
         blurDataURL="@assets/images/404.svg"
       />
       <NotFoundText>Упс, здесь еще ничего нет!</NotFoundText>
-      <Link href="/">
-        <NotFoundButton>Поиск вакансий</NotFoundButton>
-      </Link>
+      {navigateHome && (
+        <Link href="/">
+          <NotFoundButton>Поиск вакансий</NotFoundButton>
+        </Link>
+      )}
     </Container>
   );
 };

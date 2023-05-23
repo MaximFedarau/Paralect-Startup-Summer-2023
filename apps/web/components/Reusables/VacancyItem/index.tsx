@@ -1,17 +1,27 @@
-import React, { FC } from "react";
+import React, { CSSProperties, FC, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
+import Link from "next/link";
 
 import Location from "@assets/icons/location.svg";
+import Star from "@assets/icons/star.svg";
+import FilledStar from "@assets/icons/filled_star.svg";
 import {
   Container,
+  TitleContainer,
   ProfessionTitle,
+  FavoriteButton,
   JobInfoContainer,
   LocationInfoContainer,
   DelimeterContainer,
-  WrapperLink,
 } from "./styles";
 import { SemiBoldText } from "@components";
 import { Vacancy } from "@types";
+import {
+  favoritesSelector,
+  addFavorite,
+  removeFavorite,
+} from "@store/favorites";
 
 const transformPayment = (
   paymentFrom: number,
@@ -41,10 +51,42 @@ export const VacancyItem: FC<Props> = ({
   currency,
   isLink = true,
 }) => {
+  const dispatch = useDispatch();
+  const favorites = useSelector(favoritesSelector);
+
+  const [isFavorite, setIsFavorite] = useState(favorites.includes(id));
+
+  const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    isFavorite ? dispatch(removeFavorite(id)) : dispatch(addFavorite(id));
+    setIsFavorite(!isFavorite);
+  };
+
+  // using styles here to avoid React Unknown Prop Warning because of <a> (Link) styling
+  const containerStyle: CSSProperties = isLink
+    ? {
+        width: "100%",
+        alignSelf: "center",
+      }
+    : {
+        width: "100%",
+        pointerEvents: "none",
+        alignSelf: "center",
+      };
+
   return (
-    <WrapperLink href={`/vacancy/${id}`} target="_blank" isLink={isLink}>
+    <Link href={`/vacancy/${id}`} target="_blank" style={containerStyle}>
       <Container>
-        <ProfessionTitle isLink={isLink}>{profession}</ProfessionTitle>
+        <TitleContainer>
+          <ProfessionTitle isLink={isLink}>{profession}</ProfessionTitle>
+          <FavoriteButton
+            isLink={isLink}
+            onClick={isLink ? onClick : undefined}
+          >
+            <Image alt="Star" src={isFavorite ? FilledStar : Star} />
+          </FavoriteButton>
+        </TitleContainer>
         <JobInfoContainer>
           <SemiBoldText>
             {transformPayment(payment_from, payment_to, agreement)}{" "}
@@ -58,6 +100,6 @@ export const VacancyItem: FC<Props> = ({
           {town.title}
         </LocationInfoContainer>
       </Container>
-    </WrapperLink>
+    </Link>
   );
 };

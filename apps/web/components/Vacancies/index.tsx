@@ -1,10 +1,15 @@
 import React, { FC, useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 import { Container, ContentContainer } from "./styles";
 import { Filters } from "./Filters";
 import { List } from "./List";
 import { Vacancies as VacanciesType, Vacancy, SearchQuery } from "@types";
+import {
+  requestSearchBarValueSelector,
+  requestFiltersSelector,
+} from "@store/vacanciesForm";
 
 export const Vacancies: FC = () => {
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
@@ -51,9 +56,17 @@ export const Vacancies: FC = () => {
     }
   };
 
-  // initial vacancies fetch
+  // initial vacancies fetch (when page loads for the first time)
+  const requestSearchBarValue = useSelector(requestSearchBarValueSelector);
+  const { requestCatalogue, requestPaymentFrom, requestPaymentTo } =
+    useSelector(requestFiltersSelector);
   useEffect(() => {
-    getVacancies();
+    getVacancies(
+      requestSearchBarValue,
+      requestCatalogue,
+      requestPaymentFrom,
+      requestPaymentTo
+    );
   }, []);
 
   const listProps = {
@@ -70,7 +83,10 @@ export const Vacancies: FC = () => {
   return (
     <Container>
       <ContentContainer>
-        <Filters onSearchClick={onSearchClick} />
+        <Filters
+          onSearchClick={onSearchClick}
+          isRequestProcessing={isVacanciesLoading}
+        />
         <List {...listProps} />
       </ContentContainer>
     </Container>

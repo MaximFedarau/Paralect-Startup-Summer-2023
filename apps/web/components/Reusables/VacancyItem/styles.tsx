@@ -13,11 +13,22 @@ export const Container = styled.div`
   width: 100%;
 `;
 
+export const TitleContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export const ProfessionTitle = styled.div<{ isLink: boolean }>`
   color: ${({ theme, isLink }) =>
     isLink ? theme.colors.blue[4] : theme.colors.grey[6]};
   font-size: ${FONTS.sizes.xl}px;
   font-weight: ${FONTS.weights.semiBold};
+`;
+
+export const FavoriteButton = styled.div<{ isLink: boolean }>`
+  pointer-events: ${({ isLink }) => (isLink ? "auto" : "none")};
 `;
 
 export const JobInfoContainer = styled.div`
@@ -33,9 +44,4 @@ export const DelimeterContainer = styled.div`
 export const LocationInfoContainer = styled.div`
   display: flex;
   gap: ${SIZES.sm}px;
-`;
-
-export const WrapperLink = styled(Link)<{ isLink: boolean }>`
-  width: 100%;
-  pointer-events: ${({ isLink }) => (isLink ? "auto" : "none")};
 `;

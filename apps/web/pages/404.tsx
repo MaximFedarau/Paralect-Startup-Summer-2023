@@ -9,7 +9,7 @@ const Page404: FC = () => {
       <Head>
         <title>404</title>
       </Head>
-      <NoData />
+      <NoData navigateHome />
     </>
   );
 };
