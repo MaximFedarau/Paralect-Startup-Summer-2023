@@ -5,11 +5,12 @@ import axios from "axios";
 import { Container } from "./styles";
 import { SearchBar } from "@components/Vacancies/SearchBar";
 import {
-  NoVacancies,
+  ErrorState,
   CustomLoader,
   VacancyItem,
   LoaderContainer,
   VacanciesPagination,
+  NoData,
 } from "@components";
 import { Vacancies, Vacancy, SearchQuery } from "@types";
 import {
@@ -76,18 +77,20 @@ export const List: FC<Props> = ({
         disabled={isError || isLoading || isPageError || isPageLoading}
         onClick={onSearchClick}
       />
-      {isLoading || isPageLoading ? (
+      {isError || isPageError ? (
+        <ErrorState />
+      ) : isLoading || isPageLoading ? (
         <LoaderContainer>
           <CustomLoader />
         </LoaderContainer>
-      ) : vacancies.length ? (
+      ) : vacancies.length > 0 ? (
         <>
           {vacancies.map((vacancyInfo) => (
             <VacancyItem key={vacancyInfo.id} {...vacancyInfo} />
           ))}
           {total > 4 && (
             <VacanciesPagination
-              total={Math.min(Math.ceil(total / 4), 126)}
+              total={Math.min(Math.ceil(total / 4), 125)}
               value={activePage}
               onChange={onPageChange}
               disabled={isPageLoading}
@@ -95,7 +98,7 @@ export const List: FC<Props> = ({
           )}
         </>
       ) : (
-        <NoVacancies isError={isError || isPageError} />
+        <NoData />
       )}
     </Container>
   );

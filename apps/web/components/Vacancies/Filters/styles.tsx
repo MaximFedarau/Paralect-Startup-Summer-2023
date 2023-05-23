@@ -3,6 +3,13 @@ import styled from "@emotion/styled";
 import { FONTS, MEDIA_QUERIES, SIZES } from "@constants";
 import { createPolymorphicComponent, Select, SelectProps } from "@mantine/core";
 
+export const ErrorContainer = styled.div`
+  display: flex;
+  place-items: center;
+  width: 100%;
+  max-width: ${SIZES["68xl"]}px;
+`;
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;

@@ -11,7 +11,7 @@ import {
   VacancyContainer,
   VacancyContentContainer,
   VacanciesPagination,
-  NoVacancies,
+  ErrorState,
 } from "@components";
 import { favoritesSelector } from "@store/favorites";
 import { Vacancies, Vacancy } from "@types";
@@ -101,7 +101,7 @@ const Favorites: FC = () => {
       </Head>
       <VacancyContainer>
         {isFavoritesError ? (
-          <NoVacancies isError />
+          <ErrorState />
         ) : favoritesIds.length ? (
           isFavoritesLoading ? (
             <>
@@ -126,7 +126,7 @@ const Favorites: FC = () => {
             </VacancyContentContainer>
           )
         ) : (
-          <NoData />
+          <NoData navigateHome />
         )}
       </VacancyContainer>
     </>

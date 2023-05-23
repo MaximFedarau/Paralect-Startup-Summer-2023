@@ -50,7 +50,7 @@ const VacancyPage: FC<Props> = ({ isError, data }) => {
         <Head>
           <title>404</title>
         </Head>
-        <NoData />;
+        <NoData navigateHome />;
       </>
     );
   return (

@@ -83,7 +83,10 @@ export const Vacancies: FC = () => {
   return (
     <Container>
       <ContentContainer>
-        <Filters onSearchClick={onSearchClick} />
+        <Filters
+          onSearchClick={onSearchClick}
+          isRequestProcessing={isVacanciesLoading}
+        />
         <List {...listProps} />
       </ContentContainer>
     </Container>
