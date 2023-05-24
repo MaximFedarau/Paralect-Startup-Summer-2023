@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import Image from "next/image";
 
 import Balloon from "@assets/images/balloon.svg";
-import { Container, NotFoundText } from "@components/EmptyState";
+import { Container, NotFoundText } from "@components";
 
 export const ErrorState: FC = () => {
   return (

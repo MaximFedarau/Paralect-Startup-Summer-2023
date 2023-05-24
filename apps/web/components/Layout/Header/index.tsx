@@ -11,7 +11,7 @@ import { HighlightedLink } from "@components/Layout/HighlightedLink";
 
 export const Header: FC = () => {
   const { colors } = useMantineTheme();
-  const tablet = useMediaQuery(MEDIA_QUERIES.tabletQuery);
+  const isTablet = useMediaQuery(MEDIA_QUERIES.tabletQuery);
   const [openedMenu, setOpenedMenu] = useState(false);
 
   const onBurgerClick = () => {
@@ -20,26 +20,26 @@ export const Header: FC = () => {
 
   // close menu & burger, if we are not in tablet mode
   useEffect(() => {
-    if (!tablet && openedMenu) setOpenedMenu(false);
-  }, [tablet, openedMenu]);
+    if (!isTablet && openedMenu) setOpenedMenu(false);
+  }, [isTablet, openedMenu]);
 
   return (
     <NavHeader height={SIZES["17xl"]}>
       <LogoLink href="/">
         <Image
-          src={tablet ? Logo : LogoWithTitle}
+          src={isTablet ? Logo : LogoWithTitle}
           alt="Logo"
           placeholder="blur"
           blurDataURL={
-            tablet
+            isTablet
               ? "@assets/images/logo.svg"
               : "@assets/images/logo_with_title.svg"
           }
-          width={tablet ? SIZES["6xl"] : SIZES["32xl"]}
+          width={isTablet ? SIZES["6xl"] : SIZES["32xl"]}
         />
       </LogoLink>
       <LinksContainer>
-        {tablet ? (
+        {isTablet ? (
           <Menu
             shadow="md"
             width={SIZES["48xl"]}

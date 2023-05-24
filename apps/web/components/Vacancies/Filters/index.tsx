@@ -51,17 +51,17 @@ interface SelectItem {
 }
 
 interface Props {
-  onSearchClick: (params?: SearchQuery) => void;
+  onSearchClick: (params?: SearchQuery) => Promise<void>;
 }
 
 export const Filters: FC<Props> = ({ onSearchClick }) => {
   // states to change inputs styles
   const { colors } = useMantineTheme();
-  const [isCataloguesOpened, setIsCataloguesOpened] = useState(false);
-  const chevronColor = isCataloguesOpened ? colors.blue[4] : colors.grey[4];
+  const [isDrowpdownOpened, setIsDropdownOpened] = useState(false);
+  const chevronColor = isDrowpdownOpened ? colors.blue[4] : colors.grey[4];
   const cataloguesStyles = {
     input: {
-      borderColor: isCataloguesOpened ? colors.blue[4] : colors.grey[3],
+      borderColor: isDrowpdownOpened ? colors.blue[4] : colors.grey[3],
     },
   };
 
@@ -111,7 +111,7 @@ export const Filters: FC<Props> = ({ onSearchClick }) => {
     );
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     // update global request values
     dispatch(
       setRequestState({
@@ -122,7 +122,7 @@ export const Filters: FC<Props> = ({ onSearchClick }) => {
       })
     );
     // make a request
-    onSearchClick({
+    await onSearchClick({
       searchBarValue,
       catalogue: currentCatalogue,
       paymentFrom: currentPaymentFrom,
@@ -154,7 +154,7 @@ export const Filters: FC<Props> = ({ onSearchClick }) => {
                 label="Отрасль"
                 placeholder="Выберите отрасль"
                 rightSection={
-                  isCataloguesOpened ? (
+                  isDrowpdownOpened ? (
                     <IconChevronUp color={chevronColor} />
                   ) : (
                     <IconChevronDown color={chevronColor} />
@@ -163,8 +163,8 @@ export const Filters: FC<Props> = ({ onSearchClick }) => {
                 styles={cataloguesStyles}
                 value={currentCatalogue}
                 onChange={(value) => dispatch(setCurrentCatalogue(value || ""))}
-                onDropdownOpen={() => setIsCataloguesOpened(true)}
-                onDropdownClose={() => setIsCataloguesOpened(false)}
+                onDropdownOpen={() => setIsDropdownOpened(true)}
+                onDropdownClose={() => setIsDropdownOpened(false)}
               />
             </FilterContainer>
             <FilterContainer>

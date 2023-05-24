@@ -67,12 +67,12 @@ export const Vacancies: FC = () => {
     );
   }, []);
 
-  const onSearchClick = async (props: SearchQuery) => {
-    await getVacancies(1, true, ...Object.values(props));
+  const onSearchClick = async (params: SearchQuery) => {
+    await getVacancies(1, true, ...Object.values(params));
   };
 
-  const onPageChange = async (page: number, props: SearchQuery) => {
-    await getVacancies(page, false, ...Object.values(props));
+  const onPageChange = async (page: number, params: SearchQuery) => {
+    await getVacancies(page, false, ...Object.values(params));
   };
 
   const listProps = {
