@@ -51,6 +51,14 @@ export const _DarkBlueButton = styled(Button)`
   border-radius: ${SIZES.sm}px;
   background-color: ${({ theme }) => theme.colors.blue[4]};
   font-weight: ${FONTS.weights.regular};
+
+  :hover {
+    background-color: ${({ theme }) => theme.colors.blue[3]};
+  }
+
+  :active {
+    background-color: ${({ theme }) => theme.colors.blue[5]};
+  }
 `;
 
 export const DarkBlueButton = createPolymorphicComponent<"button", ButtonProps>(
@@ -62,7 +70,7 @@ export const LoaderContainer = styled.div`
   width: 100%;
   justify-content: center;
 
-  @media only screen and (${MEDIA_QUERIES.tablet}) {
+  ${MEDIA_QUERIES.tablet} {
     * {
       align-self: center;
     }
@@ -108,8 +116,21 @@ const _VacanciesPagination = styled(Pagination)`
   align-self: center;
 
   & .mantine-Pagination-control {
+    :hover {
+      color: ${({ theme }) => theme.colors.blue[3]};
+    }
+
+    :active {
+      color: ${({ theme }) => theme.colors.blue[4]};
+    }
+
+    :disabled {
+      color: ${({ theme }) => theme.colors.grey[6]};
+    }
+
     &[data-active] {
       background-color: ${({ theme }) => theme.colors.blue[4]};
+      color: ${({ theme }) => theme.colors.grey[0]};
     }
   }
 `;
@@ -118,5 +139,34 @@ export const VacanciesPagination = createPolymorphicComponent<
   "div",
   PaginationProps
 >(_VacanciesPagination);
+
+export const Container = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${SIZES["4xl"]}px;
+  margin: ${SIZES["28xl"]}px 0;
+  width: 100%;
+`;
+
+const _NotFoundText = styled(Text)`
+  color: ${({ theme }) => theme.colors.grey[6]};
+  font-weight: ${FONTS.weights.bold};
+  font-size: ${FONTS.sizes["2xl"]}px;
+  text-align: center;
+`;
+
+export const NotFoundText = createPolymorphicComponent<"div", TextProps>(
+  _NotFoundText
+);
+
+const _NotFoundButton = styled(Button)`
+  background-color: ${({ theme }) => theme.colors.blue[0]};
+  color: ${({ theme }) => theme.colors.blue[5]};
+`;
+
+export const NotFoundButton = createPolymorphicComponent<"button", ButtonProps>(
+  _NotFoundButton
+);
 
 export * from "./VacancyItem";

@@ -3,11 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import NotFound from "@assets/images/404.svg";
-import {
-  Container,
-  NotFoundText,
-  NotFoundButton,
-} from "@components/EmptyState";
+import { Container, NotFoundText, NotFoundButton } from "@components";
 
 interface Props {
   navigateHome?: boolean;

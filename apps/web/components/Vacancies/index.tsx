@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { Container, ContentContainer } from "./styles";
 import { Filters } from "./Filters";
@@ -10,83 +10,83 @@ import {
   requestSearchBarValueSelector,
   requestFiltersSelector,
 } from "@store/vacanciesForm";
+import {
+  setIsRequestProcessing,
+  setIsRequestError,
+  activePageSelector,
+  setActivePage,
+} from "@store/requestInfo";
 
 export const Vacancies: FC = () => {
+  const dispatch = useDispatch();
+
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [total, setTotal] = useState(0);
-  const [activePage, setActivePage] = useState(1);
-  const [isVacanciesLoading, setIsVacanciesLoading] = useState(true);
-  const [isVacanciesError, setIsVacanciesError] = useState(false);
-
-  const onSearchClick = async ({
-    searchBarValue,
-    catalogue,
-    paymentFrom,
-    paymentTo,
-  }: SearchQuery) => {
-    await getVacancies(searchBarValue, catalogue, paymentFrom, paymentTo);
-  };
+  const activePage = useSelector(activePageSelector);
 
   const getVacancies = async (
+    page: number,
+    isOriginalRequest: boolean, // with new search data
     keyword?: string,
     catalogueValue?: string,
     payment_from?: string,
     payment_to?: string
   ) => {
     try {
-      setIsVacanciesLoading(true);
+      dispatch(setIsRequestProcessing(true));
       const {
         data: { objects, total },
       } = await axios.get<VacanciesType>(
-        `/api/vacancies?${
-          keyword && keyword.trim().length ? `keyword=${keyword.trim()}` : ""
+        `/api/vacancies?page=${page - 1}${
+          keyword && keyword.trim().length ? `&keyword=${keyword.trim()}` : ""
         }${catalogueValue ? `&catalogues=${catalogueValue}` : ""}${
           payment_from ? `&payment_from=${payment_from}` : ""
         }${payment_to ? `&payment_to=${payment_to}` : ""}`
       );
-      setTotal(total);
-      setActivePage(1);
+      dispatch(setActivePage(page));
+      if (isOriginalRequest) setTotal(total);
       setVacancies(objects);
-      setIsVacanciesError(false);
+      dispatch(setIsRequestError(false));
     } catch (error) {
       console.error(error);
-      setIsVacanciesError(true);
+      dispatch(setIsRequestError(true));
     } finally {
-      setIsVacanciesLoading(false);
+      dispatch(setIsRequestProcessing(false));
     }
   };
 
   // initial vacancies fetch (when page loads for the first time)
   const requestSearchBarValue = useSelector(requestSearchBarValueSelector);
-  const { requestCatalogue, requestPaymentFrom, requestPaymentTo } =
-    useSelector(requestFiltersSelector);
+  const requestFilters = useSelector(requestFiltersSelector);
   useEffect(() => {
     getVacancies(
+      activePage,
+      true,
       requestSearchBarValue,
-      requestCatalogue,
-      requestPaymentFrom,
-      requestPaymentTo
+      ...Object.values(requestFilters)
     );
   }, []);
 
+  const onSearchClick = async (params: SearchQuery) => {
+    await getVacancies(1, true, ...Object.values(params));
+  };
+
+  const onPageChange = async (page: number, params: SearchQuery) => {
+    await getVacancies(page, false, ...Object.values(params));
+  };
+
   const listProps = {
     vacancies,
-    setVacancies,
     activePage,
-    setActivePage,
     total,
-    isLoading: isVacanciesLoading,
-    isError: isVacanciesError,
     onSearchClick,
+    onPageChange,
   };
 
   return (
     <Container>
       <ContentContainer>
-        <Filters
-          onSearchClick={onSearchClick}
-          isRequestProcessing={isVacanciesLoading}
-        />
+        <Filters onSearchClick={onSearchClick} />
         <List {...listProps} />
       </ContentContainer>
     </Container>

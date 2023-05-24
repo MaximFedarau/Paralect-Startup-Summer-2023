@@ -1,10 +1,14 @@
 import React, { FC, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Image from "next/image";
 import axios from "axios";
+import { useMantineTheme } from "@mantine/core";
+import {
+  IconX,
+  IconChevronDown,
+  IconChevronUp,
+  IconSelector,
+} from "@tabler/icons-react";
 
-import Cross from "@assets/icons/cross.svg";
-import ChevronDown from "@assets/icons/chevron_down.svg";
 import {
   ErrorContainer,
   Container,
@@ -13,6 +17,7 @@ import {
   FiltersContainer,
   FilterContainer,
   FilterSelect,
+  FilterInput,
 } from "./styles";
 import {
   currentFiltersSelector,
@@ -23,6 +28,7 @@ import {
   currentSearchBarValueSelector,
   setRequestState,
 } from "@store/vacanciesForm";
+import { isRequestProcessingSelector } from "@store/requestInfo";
 import {
   LargeText,
   DarkBlueButton,
@@ -45,15 +51,24 @@ interface SelectItem {
 }
 
 interface Props {
-  onSearchClick: (params?: SearchQuery) => void;
-  isRequestProcessing?: boolean;
+  onSearchClick: (params?: SearchQuery) => Promise<void>;
 }
 
-export const Filters: FC<Props> = ({
-  onSearchClick,
-  isRequestProcessing = false,
-}) => {
+export const Filters: FC<Props> = ({ onSearchClick }) => {
+  // states to change inputs styles
+  const { colors } = useMantineTheme();
+  const [isDrowpdownOpened, setIsDropdownOpened] = useState(false);
+  const chevronColor = isDrowpdownOpened ? colors.blue[4] : colors.grey[4];
+  const cataloguesStyles = {
+    input: {
+      borderColor: isDrowpdownOpened ? colors.blue[4] : colors.grey[3],
+    },
+  };
+
   const dispatch = useDispatch();
+
+  const isRequestProcessing = useSelector(isRequestProcessingSelector);
+
   const { currentCatalogue, currentPaymentFrom, currentPaymentTo } =
     useSelector(currentFiltersSelector);
   const searchBarValue = useSelector(currentSearchBarValueSelector);
@@ -61,12 +76,6 @@ export const Filters: FC<Props> = ({
   const [catalogues, setCatalogues] = useState<SelectItem[]>([]);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(catalogues.length ? false : true); // catalogues is REQUIRED
-  const payment: SelectItem[] = [];
-  for (let i = 1; i <= 30; ++i) {
-    const value = String(i * 10000),
-      currency = value + "₽";
-    payment.push({ value: value, label: currency });
-  }
 
   const loadCatalogues = async () => {
     try {
@@ -83,6 +92,8 @@ export const Filters: FC<Props> = ({
     } catch (error) {
       console.error(error);
       setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -100,7 +111,7 @@ export const Filters: FC<Props> = ({
     );
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     // update global request values
     dispatch(
       setRequestState({
@@ -111,7 +122,7 @@ export const Filters: FC<Props> = ({
       })
     );
     // make a request
-    onSearchClick({
+    await onSearchClick({
       searchBarValue,
       catalogue: currentCatalogue,
       paymentFrom: currentPaymentFrom,
@@ -121,50 +132,68 @@ export const Filters: FC<Props> = ({
 
   return (
     <>
-      {isError ? (
+      {isLoading ? (
+        <CustomLoader />
+      ) : isError ? (
         <ErrorContainer>
           <ErrorState />
         </ErrorContainer>
-      ) : isLoading ? (
-        <CustomLoader />
       ) : (
         <Container>
           <HeaderContainer>
             <LargeText>Фильтры</LargeText>
             <DropZone onClick={onDrop}>
               Сбросить все
-              <Image alt="Cross" src={Cross} />
+              <IconX />
             </DropZone>
           </HeaderContainer>
           <FiltersContainer>
             <FilterContainer>
               <FilterSelect
+                data={catalogues}
+                data-elem="industry-select"
                 label="Отрасль"
                 placeholder="Выберите отрасль"
-                rightSection={<Image alt="Chevron Down" src={ChevronDown} />}
+                rightSection={
+                  isDrowpdownOpened ? (
+                    <IconChevronUp color={chevronColor} />
+                  ) : (
+                    <IconChevronDown color={chevronColor} />
+                  )
+                }
+                styles={cataloguesStyles}
                 value={currentCatalogue}
                 onChange={(value) => dispatch(setCurrentCatalogue(value || ""))}
-                data={catalogues}
+                onDropdownOpen={() => setIsDropdownOpened(true)}
+                onDropdownClose={() => setIsDropdownOpened(false)}
               />
             </FilterContainer>
             <FilterContainer>
-              <FilterSelect
+              <FilterInput
+                data-elem="salary-from-input"
                 label="Оклад"
                 placeholder="От"
-                data={payment}
                 value={currentPaymentFrom}
-                onChange={(value) =>
-                  dispatch(setCurrentPaymentFrom(value || ""))
+                onChange={({ target: { value } }) =>
+                  dispatch(setCurrentPaymentFrom(value.replace(/\D/g, "")))
                 }
+                rightSection={<IconSelector />}
               />
-              <FilterSelect
+              <FilterInput
+                data-elem="salary-to-input"
                 placeholder="До"
-                data={payment}
                 value={currentPaymentTo}
-                onChange={(value) => dispatch(setCurrentPaymentTo(value || ""))}
+                onChange={({ target: { value } }) =>
+                  dispatch(setCurrentPaymentTo(value.replace(/\D/g, "")))
+                }
+                rightSection={<IconSelector />}
               />
             </FilterContainer>
-            <DarkBlueButton onClick={onSubmit} disabled={isRequestProcessing}>
+            <DarkBlueButton
+              onClick={onSubmit}
+              disabled={isRequestProcessing}
+              data-elem="search-button"
+            >
               Применить
             </DarkBlueButton>
           </FiltersContainer>

@@ -27,8 +27,19 @@ export const ProfessionTitle = styled.div<{ isLink: boolean }>`
   font-weight: ${FONTS.weights.semiBold};
 `;
 
-export const FavoriteButton = styled.div<{ isLink: boolean }>`
+export const FavoriteButton = styled.div<{
+  isLink: boolean;
+  isFavorite: boolean;
+}>`
   pointer-events: ${({ isLink }) => (isLink ? "auto" : "none")};
+  width: ${SIZES["2xl"]}px;
+  height: ${SIZES["2xl"]}px;
+  color: ${({ theme, isFavorite }) =>
+    isFavorite ? theme.colors.blue[4] : theme.colors.grey[4]};
+
+  :hover {
+    color: ${({ theme }) => theme.colors.blue[4]};
+  }
 `;
 
 export const JobInfoContainer = styled.div`
@@ -44,4 +55,10 @@ export const DelimeterContainer = styled.div`
 export const LocationInfoContainer = styled.div`
   display: flex;
   gap: ${SIZES.sm}px;
+
+  svg {
+    width: ${SIZES.xl}px;
+    height: ${SIZES.xl}px;
+    color: ${({ theme }) => theme.colors.grey[4]};
+  }
 `;

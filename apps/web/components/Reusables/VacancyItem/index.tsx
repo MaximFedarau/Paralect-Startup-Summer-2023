@@ -1,11 +1,8 @@
-import React, { CSSProperties, FC, useState } from "react";
+import React, { CSSProperties, FC, useState, MouseEventHandler } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Image from "next/image";
 import Link from "next/link";
+import { IconStar, IconStarFilled, IconMapPin } from "@tabler/icons-react";
 
-import Location from "@assets/icons/location.svg";
-import Star from "@assets/icons/star.svg";
-import FilledStar from "@assets/icons/filled_star.svg";
 import {
   Container,
   TitleContainer,
@@ -56,7 +53,7 @@ export const VacancyItem: FC<Props> = ({
 
   const [isFavorite, setIsFavorite] = useState(favorites.includes(id));
 
-  const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
+  const onClick: MouseEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
     event.stopPropagation();
     isFavorite ? dispatch(removeFavorite(id)) : dispatch(addFavorite(id));
@@ -76,15 +73,22 @@ export const VacancyItem: FC<Props> = ({
       };
 
   return (
-    <Link href={`/vacancy/${id}`} target="_blank" style={containerStyle}>
+    <Link
+      href={`/vacancy/${id}`}
+      target="_blank"
+      style={containerStyle}
+      data-elem={`vacancy-${id}`}
+    >
       <Container>
         <TitleContainer>
           <ProfessionTitle isLink={isLink}>{profession}</ProfessionTitle>
           <FavoriteButton
             isLink={isLink}
+            isFavorite={isFavorite}
             onClick={isLink ? onClick : undefined}
+            data-elem={`vacancy-${id}-shortlist-button`}
           >
-            <Image alt="Star" src={isFavorite ? FilledStar : Star} />
+            {isFavorite ? <IconStarFilled /> : <IconStar />}
           </FavoriteButton>
         </TitleContainer>
         <JobInfoContainer>
@@ -96,7 +100,7 @@ export const VacancyItem: FC<Props> = ({
           {type_of_work.title}
         </JobInfoContainer>
         <LocationInfoContainer>
-          <Image alt="Location" src={Location} />
+          <IconMapPin />
           {town.title}
         </LocationInfoContainer>
       </Container>

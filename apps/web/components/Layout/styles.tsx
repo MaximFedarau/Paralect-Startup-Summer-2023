@@ -9,7 +9,7 @@ export const NavHeader = styled(Header)`
   grid-template-columns: 20vw 80vw;
   align-items: center;
 
-  @media only screen and (${MEDIA_QUERIES.tablet}) {
+  ${MEDIA_QUERIES.tablet} {
     display: flex;
     justify-content: space-between;
     padding: 0 ${SIZES["4xl"]}px;
@@ -22,7 +22,7 @@ export const LinksContainer = styled.div`
   gap: ${SIZES["12xl"]}px;
   padding-right: 20vw;
 
-  @media only screen and (${MEDIA_QUERIES.tablet}) {
+  ${MEDIA_QUERIES.tablet} {
     padding: 0;
     gap: ${SIZES["2xl"]}px;
   }
@@ -31,7 +31,7 @@ export const LinksContainer = styled.div`
 export const LogoLink = styled(Link)`
   justify-self: flex-end;
 
-  @media only screen and (${MEDIA_QUERIES.tablet}) {
+  ${MEDIA_QUERIES.tablet} {
     justify-self: normal;
   }
 `;

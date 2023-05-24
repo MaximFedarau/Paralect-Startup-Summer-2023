@@ -1,8 +1,8 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Image from "next/image";
+import { IconSearch } from "@tabler/icons-react";
 
-import Magnifier from "@assets/icons/magnifier.svg";
+import { SIZES } from "@constants/theme";
 import {
   currentFiltersSelector,
   currentSearchBarValueSelector,
@@ -14,16 +14,20 @@ import { SearchQuery } from "@types";
 
 interface Props {
   disabled?: boolean;
-  onClick: (params?: SearchQuery) => void;
+  onSearchClick: (params?: SearchQuery) => Promise<void>;
 }
 
-export const SearchBar: FC<Props> = ({ onClick, ...props }) => {
+export const SearchBar: FC<Props> = ({ onSearchClick, ...props }) => {
   const dispatch = useDispatch();
   const currentSearchBarValue = useSelector(currentSearchBarValueSelector);
   const { currentCatalogue, currentPaymentFrom, currentPaymentTo } =
     useSelector(currentFiltersSelector);
 
-  const onSubmit = () => {
+  // change Container styles depending on input hover & focus
+  const [focused, setFocused] = useState(false);
+  const [hovered, setHovered] = useState(false);
+
+  const onSubmit = async () => {
     // update global request values
     dispatch(
       setRequestState({
@@ -34,7 +38,7 @@ export const SearchBar: FC<Props> = ({ onClick, ...props }) => {
       })
     );
     // make a request
-    onClick({
+    await onSearchClick({
       searchBarValue: currentSearchBarValue,
       catalogue: currentCatalogue,
       paymentFrom: currentPaymentFrom,
@@ -43,18 +47,27 @@ export const SearchBar: FC<Props> = ({ onClick, ...props }) => {
   };
 
   return (
-    <Container disabled={props.disabled}>
+    <Container disabled={props.disabled} focused={focused || hovered}>
       <SearchInput
+        data-elem="search-input"
         size="md"
         placeholder="Введите название вакансии"
-        icon={<Image src={Magnifier} alt="Magnifier" />}
+        icon={<IconSearch size={SIZES.lg} />}
         value={currentSearchBarValue}
-        onChange={({ target }) =>
-          dispatch(setCurrentSearchBarValue(target.value))
+        onChange={({ target: { value } }) =>
+          dispatch(setCurrentSearchBarValue(value))
         }
+        onFocus={() => setFocused(true)}
+        onMouseEnter={() => setHovered(true)}
+        onBlur={() => setFocused(false)}
+        onMouseOut={() => setHovered(false)}
         {...props}
       />
-      {!props.disabled && <SubmitButton onClick={onSubmit}>Поиск</SubmitButton>}
+      {!props.disabled && (
+        <SubmitButton onClick={onSubmit} data-elem="search-button">
+          Поиск
+        </SubmitButton>
+      )}
     </Container>
   );
 };

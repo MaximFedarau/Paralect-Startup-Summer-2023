@@ -2,19 +2,24 @@ import styled from "@emotion/styled";
 import {
   createPolymorphicComponent,
   ButtonProps,
-  Input,
-  InputProps,
+  TextInput,
+  TextInputProps,
 } from "@mantine/core";
 
 import { SIZES } from "@constants/theme";
 import { DarkBlueButton } from "@components/Reusables";
 
-export const Container = styled.div<{ disabled: boolean | undefined }>`
+export const Container = styled.div<{
+  disabled: boolean | undefined;
+  focused: boolean | undefined;
+}>`
   display: flex;
   width: 100%;
   align-items: center;
   background-color: white;
-  border: 1px solid ${({ theme }) => theme.colors.grey[3]};
+  border: 1px solid
+    ${({ theme, focused }) =>
+      focused ? theme.colors.blue[4] : theme.colors.grey[3]};
   border-radius: ${SIZES.sm}px;
   overflow: hidden;
   padding: 0 ${({ disabled }) => (disabled ? 0 : SIZES.md)}px 0 0;
@@ -29,14 +34,14 @@ export const SubmitButton = createPolymorphicComponent<"button", ButtonProps>(
   _SubmitButton
 );
 
-const _SearchInput = styled(Input)`
+const _SearchInput = styled(TextInput)`
   flex: 15;
-  & .mantine-Input-input {
+  & .mantine-TextInput-input {
     border: none;
     height: ${SIZES["8xl"]}px;
   }
 `;
 
-export const SearchInput = createPolymorphicComponent<"input", InputProps>(
+export const SearchInput = createPolymorphicComponent<"input", TextInputProps>(
   _SearchInput
 );
