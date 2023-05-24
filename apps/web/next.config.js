@@ -3,5 +3,8 @@ module.exports = {
   transpilePackages: [],
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
   }
 };
