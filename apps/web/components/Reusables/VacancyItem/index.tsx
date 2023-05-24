@@ -73,7 +73,12 @@ export const VacancyItem: FC<Props> = ({
       };
 
   return (
-    <Link href={`/vacancy/${id}`} target="_blank" style={containerStyle}>
+    <Link
+      href={`/vacancy/${id}`}
+      target="_blank"
+      style={containerStyle}
+      data-elem={`vacancy-${id}`}
+    >
       <Container>
         <TitleContainer>
           <ProfessionTitle isLink={isLink}>{profession}</ProfessionTitle>
@@ -81,6 +86,7 @@ export const VacancyItem: FC<Props> = ({
             isLink={isLink}
             isFavorite={isFavorite}
             onClick={isLink ? onClick : undefined}
+            data-elem={`vacancy-${id}-shortlist-button`}
           >
             {isFavorite ? <IconStarFilled /> : <IconStar />}
           </FavoriteButton>

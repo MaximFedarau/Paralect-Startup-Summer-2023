@@ -49,6 +49,7 @@ export const SearchBar: FC<Props> = ({ onSearchClick, ...props }) => {
   return (
     <Container disabled={props.disabled} focused={focused || hovered}>
       <SearchInput
+        data-elem="search-input"
         size="md"
         placeholder="Введите название вакансии"
         icon={<IconSearch size={SIZES.lg} />}
@@ -62,7 +63,11 @@ export const SearchBar: FC<Props> = ({ onSearchClick, ...props }) => {
         onMouseOut={() => setHovered(false)}
         {...props}
       />
-      {!props.disabled && <SubmitButton onClick={onSubmit}>Поиск</SubmitButton>}
+      {!props.disabled && (
+        <SubmitButton onClick={onSubmit} data-elem="search-button">
+          Поиск
+        </SubmitButton>
+      )}
     </Container>
   );
 };

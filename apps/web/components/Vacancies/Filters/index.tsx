@@ -151,6 +151,7 @@ export const Filters: FC<Props> = ({ onSearchClick }) => {
             <FilterContainer>
               <FilterSelect
                 data={catalogues}
+                data-elem="industry-select"
                 label="Отрасль"
                 placeholder="Выберите отрасль"
                 rightSection={
@@ -169,6 +170,7 @@ export const Filters: FC<Props> = ({ onSearchClick }) => {
             </FilterContainer>
             <FilterContainer>
               <FilterInput
+                data-elem="salary-from-input"
                 label="Оклад"
                 placeholder="От"
                 value={currentPaymentFrom}
@@ -178,6 +180,7 @@ export const Filters: FC<Props> = ({ onSearchClick }) => {
                 rightSection={<IconSelector />}
               />
               <FilterInput
+                data-elem="salary-to-input"
                 placeholder="До"
                 value={currentPaymentTo}
                 onChange={({ target: { value } }) =>
@@ -186,7 +189,11 @@ export const Filters: FC<Props> = ({ onSearchClick }) => {
                 rightSection={<IconSelector />}
               />
             </FilterContainer>
-            <DarkBlueButton onClick={onSubmit} disabled={isRequestProcessing}>
+            <DarkBlueButton
+              onClick={onSubmit}
+              disabled={isRequestProcessing}
+              data-elem="search-button"
+            >
               Применить
             </DarkBlueButton>
           </FiltersContainer>
