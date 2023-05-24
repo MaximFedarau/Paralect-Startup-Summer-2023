@@ -14,10 +14,10 @@ import { SearchQuery } from "@types";
 
 interface Props {
   disabled?: boolean;
-  onClick: (params?: SearchQuery) => void;
+  onSearchClick: (params?: SearchQuery) => Promise<void>;
 }
 
-export const SearchBar: FC<Props> = ({ onClick, ...props }) => {
+export const SearchBar: FC<Props> = ({ onSearchClick, ...props }) => {
   const dispatch = useDispatch();
   const currentSearchBarValue = useSelector(currentSearchBarValueSelector);
   const { currentCatalogue, currentPaymentFrom, currentPaymentTo } =
@@ -27,7 +27,7 @@ export const SearchBar: FC<Props> = ({ onClick, ...props }) => {
   const [focused, setFocused] = useState(false);
   const [hovered, setHovered] = useState(false);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     // update global request values
     dispatch(
       setRequestState({
@@ -38,7 +38,7 @@ export const SearchBar: FC<Props> = ({ onClick, ...props }) => {
       })
     );
     // make a request
-    onClick({
+    await onSearchClick({
       searchBarValue: currentSearchBarValue,
       catalogue: currentCatalogue,
       paymentFrom: currentPaymentFrom,

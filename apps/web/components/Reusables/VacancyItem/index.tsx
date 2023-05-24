@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, useState } from "react";
+import React, { CSSProperties, FC, useState, MouseEventHandler } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { IconStar, IconStarFilled, IconMapPin } from "@tabler/icons-react";
@@ -53,7 +53,7 @@ export const VacancyItem: FC<Props> = ({
 
   const [isFavorite, setIsFavorite] = useState(favorites.includes(id));
 
-  const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
+  const onClick: MouseEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
     event.stopPropagation();
     isFavorite ? dispatch(removeFavorite(id)) : dispatch(addFavorite(id));

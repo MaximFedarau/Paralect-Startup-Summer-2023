@@ -10,25 +10,23 @@ import {
   requestSearchBarValueSelector,
   requestFiltersSelector,
 } from "@store/vacanciesForm";
-import { setIsRequestProcessing, setIsRequestError } from "@store/requestInfo";
+import {
+  setIsRequestProcessing,
+  setIsRequestError,
+  activePageSelector,
+  setActivePage,
+} from "@store/requestInfo";
 
 export const Vacancies: FC = () => {
   const dispatch = useDispatch();
 
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [total, setTotal] = useState(0);
-  const [activePage, setActivePage] = useState(1);
-
-  const onSearchClick = async ({
-    searchBarValue,
-    catalogue,
-    paymentFrom,
-    paymentTo,
-  }: SearchQuery) => {
-    await getVacancies(searchBarValue, catalogue, paymentFrom, paymentTo);
-  };
+  const activePage = useSelector(activePageSelector);
 
   const getVacancies = async (
+    page: number,
+    isOriginalRequest: boolean, // with new search data
     keyword?: string,
     catalogueValue?: string,
     payment_from?: string,
@@ -39,14 +37,14 @@ export const Vacancies: FC = () => {
       const {
         data: { objects, total },
       } = await axios.get<VacanciesType>(
-        `/api/vacancies?${
-          keyword && keyword.trim().length ? `keyword=${keyword.trim()}` : ""
+        `/api/vacancies?page=${page - 1}${
+          keyword && keyword.trim().length ? `&keyword=${keyword.trim()}` : ""
         }${catalogueValue ? `&catalogues=${catalogueValue}` : ""}${
           payment_from ? `&payment_from=${payment_from}` : ""
         }${payment_to ? `&payment_to=${payment_to}` : ""}`
       );
-      setTotal(total);
-      setActivePage(1);
+      dispatch(setActivePage(page));
+      if (isOriginalRequest) setTotal(total);
       setVacancies(objects);
       dispatch(setIsRequestError(false));
     } catch (error) {
@@ -59,24 +57,30 @@ export const Vacancies: FC = () => {
 
   // initial vacancies fetch (when page loads for the first time)
   const requestSearchBarValue = useSelector(requestSearchBarValueSelector);
-  const { requestCatalogue, requestPaymentFrom, requestPaymentTo } =
-    useSelector(requestFiltersSelector);
+  const requestFilters = useSelector(requestFiltersSelector);
   useEffect(() => {
     getVacancies(
+      activePage,
+      true,
       requestSearchBarValue,
-      requestCatalogue,
-      requestPaymentFrom,
-      requestPaymentTo
+      ...Object.values(requestFilters)
     );
   }, []);
 
+  const onSearchClick = async (props: SearchQuery) => {
+    await getVacancies(1, true, ...Object.values(props));
+  };
+
+  const onPageChange = async (page: number, props: SearchQuery) => {
+    await getVacancies(page, false, ...Object.values(props));
+  };
+
   const listProps = {
     vacancies,
-    setVacancies,
     activePage,
-    setActivePage,
     total,
     onSearchClick,
+    onPageChange,
   };
 
   return (

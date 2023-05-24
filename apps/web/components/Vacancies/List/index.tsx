@@ -1,6 +1,5 @@
 import React, { FC } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import { useSelector } from "react-redux";
 
 import { Container } from "./styles";
 import { SearchBar } from "@components/Vacancies/SearchBar";
@@ -12,7 +11,7 @@ import {
   VacanciesPagination,
   NoData,
 } from "@components";
-import { Vacancies, Vacancy, SearchQuery } from "@types";
+import { Vacancy, SearchQuery } from "@types";
 import {
   requestSearchBarValueSelector,
   requestFiltersSelector,
@@ -20,28 +19,23 @@ import {
 import {
   isRequestProcessingSelector,
   isRequestErrorSelector,
-  setIsRequestProcessing,
-  setIsRequestError,
 } from "@store/requestInfo";
 
 interface Props {
   vacancies: Vacancy[];
-  setVacancies: React.Dispatch<React.SetStateAction<Vacancy[]>>;
   activePage: number;
-  setActivePage: React.Dispatch<React.SetStateAction<number>>;
   total: number;
-  onSearchClick: (params?: SearchQuery) => void;
+  onSearchClick: (params?: SearchQuery) => Promise<void>;
+  onPageChange: (page: number, params?: SearchQuery) => Promise<void>;
 }
 
 export const List: FC<Props> = ({
   vacancies,
-  setVacancies,
   activePage,
-  setActivePage,
   total,
   onSearchClick,
+  onPageChange,
 }) => {
-  const dispatch = useDispatch();
   const isRequestProcessing = useSelector(isRequestProcessingSelector);
   const isRequestError = useSelector(isRequestErrorSelector);
 
@@ -49,34 +43,18 @@ export const List: FC<Props> = ({
   const { requestCatalogue, requestPaymentFrom, requestPaymentTo } =
     useSelector(requestFiltersSelector);
 
-  const onPageChange = async (value: number) => {
-    try {
-      dispatch(setIsRequestProcessing(true));
-      const {
-        data: { objects },
-      } = await axios.get<Vacancies>(
-        `/api/vacancies?page=${value - 1}${
-          searchBarValue && searchBarValue.trim().length
-            ? `&keyword=${searchBarValue.trim()}`
-            : ""
-        }${requestCatalogue ? `&catalogues=${requestCatalogue}` : ""}${
-          requestPaymentFrom ? `&payment_from=${requestPaymentFrom}` : ""
-        }${requestPaymentTo ? `&payment_to=${requestPaymentTo}` : ""}`
-      );
-      setVacancies(objects);
-      dispatch(setIsRequestError(false));
-    } catch (error) {
-      console.error(error);
-      dispatch(setIsRequestError(true));
-    } finally {
-      setActivePage(value);
-      dispatch(setIsRequestProcessing(false));
-    }
+  const pageChangeHandler = async (value: number) => {
+    await onPageChange(value, {
+      searchBarValue,
+      catalogue: requestCatalogue,
+      paymentFrom: requestPaymentFrom,
+      paymentTo: requestPaymentTo,
+    });
   };
 
   return (
     <Container>
-      <SearchBar disabled={isRequestProcessing} onClick={onSearchClick} />
+      <SearchBar disabled={isRequestProcessing} onSearchClick={onSearchClick} />
       {isRequestProcessing ? (
         <LoaderContainer>
           <CustomLoader />
@@ -92,7 +70,7 @@ export const List: FC<Props> = ({
             <VacanciesPagination
               total={Math.min(Math.ceil(total / 4), 125)}
               value={activePage}
-              onChange={onPageChange}
+              onChange={pageChangeHandler}
               disabled={isRequestProcessing}
             />
           )}

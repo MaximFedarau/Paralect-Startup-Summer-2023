@@ -13,3 +13,8 @@ export const isRequestErrorSelector = createSelector(
   [requestInfoSelector],
   ({ isRequestError }) => isRequestError
 );
+
+export const activePageSelector = createSelector(
+  [requestInfoSelector],
+  ({ activePage }) => activePage
+);
