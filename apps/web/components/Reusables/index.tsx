@@ -70,7 +70,7 @@ export const LoaderContainer = styled.div`
   width: 100%;
   justify-content: center;
 
-  @media only screen and (${MEDIA_QUERIES.tablet}) {
+  ${MEDIA_QUERIES.tablet} {
     * {
       align-self: center;
     }

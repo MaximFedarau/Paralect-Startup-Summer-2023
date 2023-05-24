@@ -14,6 +14,10 @@ export const ErrorContainer = styled.div`
   place-items: center;
   width: 100%;
   max-width: ${SIZES["68xl"]}px;
+
+  ${MEDIA_QUERIES.tablet} {
+    align-self: center;
+  }
 `;
 
 export const Container = styled.div`
@@ -27,7 +31,7 @@ export const Container = styled.div`
   max-width: ${SIZES["68xl"]}px;
   gap: ${SIZES["2xl"]}px;
 
-  @media only screen and (${MEDIA_QUERIES.tablet}) {
+  ${MEDIA_QUERIES.tablet} {
     align-self: center;
   }
 `;

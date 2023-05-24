@@ -20,7 +20,7 @@ export const ContentContainer = styled.div`
   max-width: ${SIZES["396xl"]}px;
   gap: ${SIZES["3xl"]}px;
 
-  @media only screen and (${MEDIA_QUERIES.tablet}) {
+  ${MEDIA_QUERIES.tablet} {
     flex-direction: column;
     justify-content: start;
   }

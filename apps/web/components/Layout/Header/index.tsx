@@ -11,7 +11,7 @@ import { HighlightedLink } from "@components/Layout/HighlightedLink";
 
 export const Header: FC = () => {
   const { colors } = useMantineTheme();
-  const tablet = useMediaQuery(MEDIA_QUERIES.tablet);
+  const tablet = useMediaQuery(MEDIA_QUERIES.tabletQuery);
   const [openedMenu, setOpenedMenu] = useState(false);
 
   const onBurgerClick = () => {
