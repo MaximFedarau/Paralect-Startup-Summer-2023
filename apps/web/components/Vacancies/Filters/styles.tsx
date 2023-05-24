@@ -1,7 +1,13 @@
 import styled from "@emotion/styled";
 
 import { FONTS, MEDIA_QUERIES, SIZES } from "@constants";
-import { createPolymorphicComponent, Select, SelectProps } from "@mantine/core";
+import {
+  createPolymorphicComponent,
+  Select,
+  SelectProps,
+  TextInput,
+  TextInputProps,
+} from "@mantine/core";
 
 export const ErrorContainer = styled.div`
   display: flex;
@@ -102,4 +108,31 @@ const _FilterSelect = styled(Select)`
 
 export const FilterSelect = createPolymorphicComponent<"div", SelectProps>(
   _FilterSelect
+);
+
+const _FilterInput = styled(TextInput)`
+  & .mantine-TextInput-label {
+    font-size: ${FONTS.sizes.lg}px;
+    font-weight: ${FONTS.weights.bold};
+    margin-bottom: ${SIZES.sm}px;
+  }
+
+  & .mantine-TextInput-input {
+    height: ${SIZES["6xl"]}px;
+    border-radius: ${SIZES.sm}px;
+
+    :hover,
+    :focus {
+      border-color: ${({ theme }) => theme.colors.blue[4]};
+    }
+  }
+
+  & .mantine-TextInput-rightSection {
+    pointer-events: none;
+    color: ${({ theme }) => theme.colors.grey[4]};
+  }
+`;
+
+export const FilterInput = createPolymorphicComponent<"input", TextInputProps>(
+  _FilterInput
 );

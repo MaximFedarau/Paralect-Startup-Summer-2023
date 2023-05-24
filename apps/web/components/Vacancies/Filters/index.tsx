@@ -2,7 +2,12 @@ import React, { FC, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useMantineTheme } from "@mantine/core";
-import { IconX, IconChevronDown, IconChevronUp } from "@tabler/icons-react";
+import {
+  IconX,
+  IconChevronDown,
+  IconChevronUp,
+  IconSelector,
+} from "@tabler/icons-react";
 
 import {
   ErrorContainer,
@@ -12,6 +17,7 @@ import {
   FiltersContainer,
   FilterContainer,
   FilterSelect,
+  FilterInput,
 } from "./styles";
 import {
   currentFiltersSelector,
@@ -70,12 +76,6 @@ export const Filters: FC<Props> = ({
   const [catalogues, setCatalogues] = useState<SelectItem[]>([]);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(catalogues.length ? false : true); // catalogues is REQUIRED
-  const payment: SelectItem[] = [];
-  for (let i = 1; i <= 30; ++i) {
-    const value = String(i * 10000),
-      currency = value + "₽";
-    payment.push({ value: value, label: currency });
-  }
 
   const loadCatalogues = async () => {
     try {
@@ -166,20 +166,22 @@ export const Filters: FC<Props> = ({
               />
             </FilterContainer>
             <FilterContainer>
-              <FilterSelect
+              <FilterInput
                 label="Оклад"
                 placeholder="От"
-                data={payment}
                 value={currentPaymentFrom}
-                onChange={(value) =>
-                  dispatch(setCurrentPaymentFrom(value || ""))
+                onChange={({ target: { value } }) =>
+                  dispatch(setCurrentPaymentFrom(value.replace(/\D/g, "")))
                 }
+                rightSection={<IconSelector />}
               />
-              <FilterSelect
+              <FilterInput
                 placeholder="До"
-                data={payment}
                 value={currentPaymentTo}
-                onChange={(value) => dispatch(setCurrentPaymentTo(value || ""))}
+                onChange={({ target: { value } }) =>
+                  dispatch(setCurrentPaymentTo(value.replace(/\D/g, "")))
+                }
+                rightSection={<IconSelector />}
               />
             </FilterContainer>
             <DarkBlueButton onClick={onSubmit} disabled={isRequestProcessing}>
