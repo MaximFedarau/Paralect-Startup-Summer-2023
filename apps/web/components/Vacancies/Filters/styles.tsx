@@ -39,6 +39,20 @@ export const DropZone = styled.div`
   font-weight: ${FONTS.weights.medium};
   font-size: ${FONTS.sizes.sm}px;
   cursor: pointer;
+  gap: ${SIZES.sm / 2}px;
+
+  :hover {
+    color: ${({ theme }) => theme.colors.blue[3]};
+  }
+
+  :active {
+    color: ${({ theme }) => theme.colors.blue[4]};
+  }
+
+  svg {
+    width: ${SIZES.lg}px;
+    height: ${SIZES.lg}px;
+  }
 `;
 
 export const FiltersContainer = styled.div`

@@ -9,12 +9,17 @@ import {
 import { SIZES } from "@constants/theme";
 import { DarkBlueButton } from "@components/Reusables";
 
-export const Container = styled.div<{ disabled: boolean | undefined }>`
+export const Container = styled.div<{
+  disabled: boolean | undefined;
+  focused: boolean | undefined;
+}>`
   display: flex;
   width: 100%;
   align-items: center;
   background-color: white;
-  border: 1px solid ${({ theme }) => theme.colors.grey[3]};
+  border: 1px solid
+    ${({ theme, focused }) =>
+      focused ? theme.colors.blue[4] : theme.colors.grey[3]};
   border-radius: ${SIZES.sm}px;
   overflow: hidden;
   padding: 0 ${({ disabled }) => (disabled ? 0 : SIZES.md)}px 0 0;

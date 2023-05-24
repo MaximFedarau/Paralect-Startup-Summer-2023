@@ -51,6 +51,14 @@ export const _DarkBlueButton = styled(Button)`
   border-radius: ${SIZES.sm}px;
   background-color: ${({ theme }) => theme.colors.blue[4]};
   font-weight: ${FONTS.weights.regular};
+
+  :hover {
+    background-color: ${({ theme }) => theme.colors.blue[3]};
+  }
+
+  :active {
+    background-color: ${({ theme }) => theme.colors.blue[5]};
+  }
 `;
 
 export const DarkBlueButton = createPolymorphicComponent<"button", ButtonProps>(

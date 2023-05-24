@@ -2,10 +2,9 @@ import React, { CSSProperties, FC, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
+import { IconStar, IconStarFilled } from "@tabler/icons-react";
 
 import Location from "@assets/icons/location.svg";
-import Star from "@assets/icons/star.svg";
-import FilledStar from "@assets/icons/filled_star.svg";
 import {
   Container,
   TitleContainer,
@@ -82,9 +81,10 @@ export const VacancyItem: FC<Props> = ({
           <ProfessionTitle isLink={isLink}>{profession}</ProfessionTitle>
           <FavoriteButton
             isLink={isLink}
+            isFavorite={isFavorite}
             onClick={isLink ? onClick : undefined}
           >
-            <Image alt="Star" src={isFavorite ? FilledStar : Star} />
+            {isFavorite ? <IconStarFilled /> : <IconStar />}
           </FavoriteButton>
         </TitleContainer>
         <JobInfoContainer>

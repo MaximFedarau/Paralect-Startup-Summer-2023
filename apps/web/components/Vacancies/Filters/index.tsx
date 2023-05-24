@@ -2,8 +2,8 @@ import React, { FC, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import axios from "axios";
+import { IconX } from "@tabler/icons-react";
 
-import Cross from "@assets/icons/cross.svg";
 import ChevronDown from "@assets/icons/chevron_down.svg";
 import {
   ErrorContainer,
@@ -133,7 +133,7 @@ export const Filters: FC<Props> = ({
             <LargeText>Фильтры</LargeText>
             <DropZone onClick={onDrop}>
               Сбросить все
-              <Image alt="Cross" src={Cross} />
+              <IconX />
             </DropZone>
           </HeaderContainer>
           <FiltersContainer>

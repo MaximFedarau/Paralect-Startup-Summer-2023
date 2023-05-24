@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 
@@ -23,6 +23,10 @@ export const SearchBar: FC<Props> = ({ onClick, ...props }) => {
   const { currentCatalogue, currentPaymentFrom, currentPaymentTo } =
     useSelector(currentFiltersSelector);
 
+  // change Container styles depending on input hover & focus
+  const [focused, setFocused] = useState(false);
+  const [hovered, setHovered] = useState(false);
+
   const onSubmit = () => {
     // update global request values
     dispatch(
@@ -43,7 +47,7 @@ export const SearchBar: FC<Props> = ({ onClick, ...props }) => {
   };
 
   return (
-    <Container disabled={props.disabled}>
+    <Container disabled={props.disabled} focused={focused || hovered}>
       <SearchInput
         size="md"
         placeholder="Введите название вакансии"
@@ -52,6 +56,10 @@ export const SearchBar: FC<Props> = ({ onClick, ...props }) => {
         onChange={({ target }) =>
           dispatch(setCurrentSearchBarValue(target.value))
         }
+        onFocus={() => setFocused(true)}
+        onMouseEnter={() => setHovered(true)}
+        onBlur={() => setFocused(false)}
+        onMouseOut={() => setHovered(false)}
         {...props}
       />
       {!props.disabled && <SubmitButton onClick={onSubmit}>Поиск</SubmitButton>}
