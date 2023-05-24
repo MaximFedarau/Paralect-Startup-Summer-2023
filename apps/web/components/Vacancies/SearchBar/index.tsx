@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Image from "next/image";
+import { IconSearch } from "@tabler/icons-react";
 
-import Magnifier from "@assets/icons/magnifier.svg";
+import { SIZES } from "@constants/theme";
 import {
   currentFiltersSelector,
   currentSearchBarValueSelector,
@@ -51,7 +51,7 @@ export const SearchBar: FC<Props> = ({ onClick, ...props }) => {
       <SearchInput
         size="md"
         placeholder="Введите название вакансии"
-        icon={<Image src={Magnifier} alt="Magnifier" />}
+        icon={<IconSearch size={SIZES.lg} />}
         value={currentSearchBarValue}
         onChange={({ target }) =>
           dispatch(setCurrentSearchBarValue(target.value))

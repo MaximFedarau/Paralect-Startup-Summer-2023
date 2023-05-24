@@ -116,8 +116,21 @@ const _VacanciesPagination = styled(Pagination)`
   align-self: center;
 
   & .mantine-Pagination-control {
+    :hover {
+      color: ${({ theme }) => theme.colors.blue[3]};
+    }
+
+    :active {
+      color: ${({ theme }) => theme.colors.blue[4]};
+    }
+
+    :disabled {
+      color: ${({ theme }) => theme.colors.grey[6]};
+    }
+
     &[data-active] {
       background-color: ${({ theme }) => theme.colors.blue[4]};
+      color: ${({ theme }) => theme.colors.grey[0]};
     }
   }
 `;

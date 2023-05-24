@@ -1,10 +1,8 @@
 import React, { CSSProperties, FC, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Image from "next/image";
 import Link from "next/link";
-import { IconStar, IconStarFilled } from "@tabler/icons-react";
+import { IconStar, IconStarFilled, IconMapPin } from "@tabler/icons-react";
 
-import Location from "@assets/icons/location.svg";
 import {
   Container,
   TitleContainer,
@@ -96,7 +94,7 @@ export const VacancyItem: FC<Props> = ({
           {type_of_work.title}
         </JobInfoContainer>
         <LocationInfoContainer>
-          <Image alt="Location" src={Location} />
+          <IconMapPin />
           {town.title}
         </LocationInfoContainer>
       </Container>

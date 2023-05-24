@@ -55,4 +55,10 @@ export const DelimeterContainer = styled.div`
 export const LocationInfoContainer = styled.div`
   display: flex;
   gap: ${SIZES.sm}px;
+
+  svg {
+    width: ${SIZES.xl}px;
+    height: ${SIZES.xl}px;
+    color: ${({ theme }) => theme.colors.grey[4]};
+  }
 `;

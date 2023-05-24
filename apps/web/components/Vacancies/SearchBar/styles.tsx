@@ -2,8 +2,8 @@ import styled from "@emotion/styled";
 import {
   createPolymorphicComponent,
   ButtonProps,
-  Input,
-  InputProps,
+  TextInput,
+  TextInputProps,
 } from "@mantine/core";
 
 import { SIZES } from "@constants/theme";
@@ -34,14 +34,14 @@ export const SubmitButton = createPolymorphicComponent<"button", ButtonProps>(
   _SubmitButton
 );
 
-const _SearchInput = styled(Input)`
+const _SearchInput = styled(TextInput)`
   flex: 15;
-  & .mantine-Input-input {
+  & .mantine-TextInput-input {
     border: none;
     height: ${SIZES["8xl"]}px;
   }
 `;
 
-export const SearchInput = createPolymorphicComponent<"input", InputProps>(
+export const SearchInput = createPolymorphicComponent<"input", TextInputProps>(
   _SearchInput
 );
