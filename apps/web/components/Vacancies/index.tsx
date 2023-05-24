@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { Container, ContentContainer } from "./styles";
 import { Filters } from "./Filters";
@@ -10,13 +10,14 @@ import {
   requestSearchBarValueSelector,
   requestFiltersSelector,
 } from "@store/vacanciesForm";
+import { setIsRequestProcessing, setIsRequestError } from "@store/requestInfo";
 
 export const Vacancies: FC = () => {
+  const dispatch = useDispatch();
+
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [total, setTotal] = useState(0);
   const [activePage, setActivePage] = useState(1);
-  const [isVacanciesLoading, setIsVacanciesLoading] = useState(true);
-  const [isVacanciesError, setIsVacanciesError] = useState(false);
 
   const onSearchClick = async ({
     searchBarValue,
@@ -34,7 +35,7 @@ export const Vacancies: FC = () => {
     payment_to?: string
   ) => {
     try {
-      setIsVacanciesLoading(true);
+      dispatch(setIsRequestProcessing(true));
       const {
         data: { objects, total },
       } = await axios.get<VacanciesType>(
@@ -47,12 +48,12 @@ export const Vacancies: FC = () => {
       setTotal(total);
       setActivePage(1);
       setVacancies(objects);
-      setIsVacanciesError(false);
+      dispatch(setIsRequestError(false));
     } catch (error) {
       console.error(error);
-      setIsVacanciesError(true);
+      dispatch(setIsRequestError(true));
     } finally {
-      setIsVacanciesLoading(false);
+      dispatch(setIsRequestProcessing(false));
     }
   };
 
@@ -75,18 +76,13 @@ export const Vacancies: FC = () => {
     activePage,
     setActivePage,
     total,
-    isLoading: isVacanciesLoading,
-    isError: isVacanciesError,
     onSearchClick,
   };
 
   return (
     <Container>
       <ContentContainer>
-        <Filters
-          onSearchClick={onSearchClick}
-          isRequestProcessing={isVacanciesLoading}
-        />
+        <Filters onSearchClick={onSearchClick} />
         <List {...listProps} />
       </ContentContainer>
     </Container>

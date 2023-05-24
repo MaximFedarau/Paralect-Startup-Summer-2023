@@ -53,8 +53,8 @@ export const SearchBar: FC<Props> = ({ onClick, ...props }) => {
         placeholder="Введите название вакансии"
         icon={<IconSearch size={SIZES.lg} />}
         value={currentSearchBarValue}
-        onChange={({ target }) =>
-          dispatch(setCurrentSearchBarValue(target.value))
+        onChange={({ target: { value } }) =>
+          dispatch(setCurrentSearchBarValue(value))
         }
         onFocus={() => setFocused(true)}
         onMouseEnter={() => setHovered(true)}

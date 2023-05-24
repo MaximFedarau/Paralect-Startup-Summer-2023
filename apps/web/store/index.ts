@@ -41,7 +41,7 @@ const storage =
 const persistConfig: PersistConfig<unknown, any, any, any> = {
   key: "root",
   storage,
-  blacklist: ["vacanciesForm"],
+  blacklist: ["vacanciesForm", "requestInfo"],
 };
 
 const persistedRootReducer = persistReducer(persistConfig, rootReducer);

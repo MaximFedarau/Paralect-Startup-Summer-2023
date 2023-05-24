@@ -28,6 +28,7 @@ import {
   currentSearchBarValueSelector,
   setRequestState,
 } from "@store/vacanciesForm";
+import { isRequestProcessingSelector } from "@store/requestInfo";
 import {
   LargeText,
   DarkBlueButton,
@@ -51,13 +52,9 @@ interface SelectItem {
 
 interface Props {
   onSearchClick: (params?: SearchQuery) => void;
-  isRequestProcessing?: boolean;
 }
 
-export const Filters: FC<Props> = ({
-  onSearchClick,
-  isRequestProcessing = false,
-}) => {
+export const Filters: FC<Props> = ({ onSearchClick }) => {
   // states to change inputs styles
   const { colors } = useMantineTheme();
   const [isCataloguesOpened, setIsCataloguesOpened] = useState(false);
@@ -69,6 +66,9 @@ export const Filters: FC<Props> = ({
   };
 
   const dispatch = useDispatch();
+
+  const isRequestProcessing = useSelector(isRequestProcessingSelector);
+
   const { currentCatalogue, currentPaymentFrom, currentPaymentTo } =
     useSelector(currentFiltersSelector);
   const searchBarValue = useSelector(currentSearchBarValueSelector);
@@ -92,6 +92,8 @@ export const Filters: FC<Props> = ({
     } catch (error) {
       console.error(error);
       setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -130,12 +132,12 @@ export const Filters: FC<Props> = ({
 
   return (
     <>
-      {isError ? (
+      {isLoading ? (
+        <CustomLoader />
+      ) : isError ? (
         <ErrorContainer>
           <ErrorState />
         </ErrorContainer>
-      ) : isLoading ? (
-        <CustomLoader />
       ) : (
         <Container>
           <HeaderContainer>

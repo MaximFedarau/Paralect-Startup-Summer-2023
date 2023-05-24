@@ -1,5 +1,5 @@
-import React, { FC, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { FC } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
 import { Container } from "./styles";
@@ -17,6 +17,12 @@ import {
   requestSearchBarValueSelector,
   requestFiltersSelector,
 } from "@store/vacanciesForm";
+import {
+  isRequestProcessingSelector,
+  isRequestErrorSelector,
+  setIsRequestProcessing,
+  setIsRequestError,
+} from "@store/requestInfo";
 
 interface Props {
   vacancies: Vacancy[];
@@ -24,8 +30,6 @@ interface Props {
   activePage: number;
   setActivePage: React.Dispatch<React.SetStateAction<number>>;
   total: number;
-  isLoading: boolean;
-  isError: boolean;
   onSearchClick: (params?: SearchQuery) => void;
 }
 
@@ -35,20 +39,19 @@ export const List: FC<Props> = ({
   activePage,
   setActivePage,
   total,
-  isLoading,
-  isError,
   onSearchClick,
 }) => {
+  const dispatch = useDispatch();
+  const isRequestProcessing = useSelector(isRequestProcessingSelector);
+  const isRequestError = useSelector(isRequestErrorSelector);
+
   const searchBarValue = useSelector(requestSearchBarValueSelector);
   const { requestCatalogue, requestPaymentFrom, requestPaymentTo } =
     useSelector(requestFiltersSelector);
 
-  const [isPageLoading, setIsPageLoading] = useState(false);
-  const [isPageError, setIsPageError] = useState(false);
-
   const onPageChange = async (value: number) => {
     try {
-      setIsPageLoading(true);
+      dispatch(setIsRequestProcessing(true));
       const {
         data: { objects },
       } = await axios.get<Vacancies>(
@@ -61,28 +64,25 @@ export const List: FC<Props> = ({
         }${requestPaymentTo ? `&payment_to=${requestPaymentTo}` : ""}`
       );
       setVacancies(objects);
-      setIsPageError(false);
+      dispatch(setIsRequestError(false));
     } catch (error) {
       console.error(error);
-      setIsPageError(true);
+      dispatch(setIsRequestError(true));
     } finally {
       setActivePage(value);
-      setIsPageLoading(false);
+      dispatch(setIsRequestProcessing(false));
     }
   };
 
   return (
     <Container>
-      <SearchBar
-        disabled={isError || isLoading || isPageError || isPageLoading}
-        onClick={onSearchClick}
-      />
-      {isError || isPageError ? (
-        <ErrorState />
-      ) : isLoading || isPageLoading ? (
+      <SearchBar disabled={isRequestProcessing} onClick={onSearchClick} />
+      {isRequestProcessing ? (
         <LoaderContainer>
           <CustomLoader />
         </LoaderContainer>
+      ) : isRequestError ? (
+        <ErrorState />
       ) : vacancies.length > 0 ? (
         <>
           {vacancies.map((vacancyInfo) => (
@@ -93,7 +93,7 @@ export const List: FC<Props> = ({
               total={Math.min(Math.ceil(total / 4), 125)}
               value={activePage}
               onChange={onPageChange}
-              disabled={isPageLoading}
+              disabled={isRequestProcessing}
             />
           )}
         </>

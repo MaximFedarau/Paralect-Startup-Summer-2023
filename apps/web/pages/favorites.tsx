@@ -57,6 +57,7 @@ const Favorites: FC = () => {
       }
     } catch (error) {
       console.error(error);
+      setIsFavoritesLoading(false);
       setIsFavoritesError(true);
     }
   };
@@ -100,15 +101,15 @@ const Favorites: FC = () => {
         <title>Избранное</title>
       </Head>
       <VacancyContainer>
-        {isFavoritesError ? (
-          <ErrorState />
-        ) : favoritesIds.length ? (
+        {favoritesIds.length ? (
           isFavoritesLoading ? (
             <>
               <LoaderContainer>
                 <CustomLoader />
               </LoaderContainer>
             </>
+          ) : isFavoritesError ? (
+            <ErrorState />
           ) : (
             <VacancyContentContainer>
               {favorites
