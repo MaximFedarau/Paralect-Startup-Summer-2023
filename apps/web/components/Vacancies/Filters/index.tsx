@@ -1,10 +1,9 @@
 import React, { FC, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Image from "next/image";
 import axios from "axios";
-import { IconX } from "@tabler/icons-react";
+import { useMantineTheme } from "@mantine/core";
+import { IconX, IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 
-import ChevronDown from "@assets/icons/chevron_down.svg";
 import {
   ErrorContainer,
   Container,
@@ -53,6 +52,16 @@ export const Filters: FC<Props> = ({
   onSearchClick,
   isRequestProcessing = false,
 }) => {
+  // states to change inputs styles
+  const { colors } = useMantineTheme();
+  const [isCataloguesOpened, setIsCataloguesOpened] = useState(false);
+  const chevronColor = isCataloguesOpened ? colors.blue[4] : colors.grey[4];
+  const cataloguesStyles = {
+    input: {
+      borderColor: isCataloguesOpened ? colors.blue[4] : colors.grey[3],
+    },
+  };
+
   const dispatch = useDispatch();
   const { currentCatalogue, currentPaymentFrom, currentPaymentTo } =
     useSelector(currentFiltersSelector);
@@ -139,12 +148,21 @@ export const Filters: FC<Props> = ({
           <FiltersContainer>
             <FilterContainer>
               <FilterSelect
+                data={catalogues}
                 label="Отрасль"
                 placeholder="Выберите отрасль"
-                rightSection={<Image alt="Chevron Down" src={ChevronDown} />}
+                rightSection={
+                  isCataloguesOpened ? (
+                    <IconChevronUp color={chevronColor} />
+                  ) : (
+                    <IconChevronDown color={chevronColor} />
+                  )
+                }
+                styles={cataloguesStyles}
                 value={currentCatalogue}
                 onChange={(value) => dispatch(setCurrentCatalogue(value || ""))}
-                data={catalogues}
+                onDropdownOpen={() => setIsCataloguesOpened(true)}
+                onDropdownClose={() => setIsCataloguesOpened(false)}
               />
             </FilterContainer>
             <FilterContainer>

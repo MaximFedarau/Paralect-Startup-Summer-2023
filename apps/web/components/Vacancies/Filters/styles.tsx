@@ -76,7 +76,11 @@ const _FilterSelect = styled(Select)`
 
   & .mantine-Select-input {
     height: ${SIZES["6xl"]}px;
-    border-color: ${({ theme }) => theme.colors.grey[3]};
+    border-radius: ${SIZES.sm}px;
+
+    :hover {
+      border-color: ${({ theme }) => theme.colors.blue[4]};
+    }
   }
 
   & .mantine-Select-rightSection {
@@ -84,8 +88,14 @@ const _FilterSelect = styled(Select)`
   }
 
   & .mantine-Select-item {
+    &[data-hovered] {
+      background-color: ${({ theme }) => theme.colors.blue[0]};
+      color: ${({ theme }) => theme.colors.grey[6]};
+    }
+
     &[data-selected] {
-      color: ${({ theme }) => theme.colors.blue[4]};
+      color: ${({ theme }) => theme.colors.grey[0]};
+      background-color: ${({ theme }) => theme.colors.blue[4]};
     }
   }
 `;
