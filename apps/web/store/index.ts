@@ -11,6 +11,7 @@ import {
   REGISTER,
 } from "redux-persist";
 
+import { REDUCERS_NAMES } from "@constants";
 import { rootReducer } from "./rootReducer";
 import { listener } from "./middlewares";
 
@@ -41,7 +42,7 @@ const storage =
 const persistConfig: PersistConfig<unknown, any, any, any> = {
   key: "root",
   storage,
-  blacklist: ["vacanciesForm", "requestInfo"],
+  blacklist: [REDUCERS_NAMES.VACANCIES_FORM, REDUCERS_NAMES.REQUEST_INFO],
 };
 
 const persistedRootReducer = persistReducer(persistConfig, rootReducer);
